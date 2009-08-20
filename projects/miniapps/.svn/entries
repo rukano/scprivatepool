@@ -1,0 +1,40 @@
+8
+
+dir
+14
+https://sccodepool.googlecode.com/svn/trunk/projects/miniapps
+https://sccodepool.googlecode.com/svn
+
+
+
+2009-06-24T19:19:56.653907Z
+11
+rukano
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+16c1244c-5a5a-11de-8dc1-e798e446b60a
+
+midi_step_sequencer
+dir
+
+keine_melodien
+dir
+
+aphex_flim
+dir
+
+black_and_white
+dir
+

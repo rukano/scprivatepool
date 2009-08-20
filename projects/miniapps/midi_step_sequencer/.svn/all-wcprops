@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/8/trunk/projects/miniapps/midi_step_sequencer
+END
+_synths.scd
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/8/trunk/projects/miniapps/midi_step_sequencer/_synths.scd
+END
+_code_(wslib).scd
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/8/trunk/projects/miniapps/midi_step_sequencer/_code_(wslib).scd
+END
+_code_(no_wslib).scd
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/8/trunk/projects/miniapps/midi_step_sequencer/_code_(no_wslib).scd
+END
