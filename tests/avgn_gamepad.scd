@@ -16,7 +16,7 @@ var voiceButtons, voiceNotes, voicePairs, voiceDict, group, effects;
 
 SynthDef(\test, { |out, freq=440, amp=0.7, gate=1|
 	var harm = (1,1.98..4);
-	var snd = Nes2Square.ar(Impulse.kr(freq/20), 0, 0, 1, 10, 1, 7, 0, 0, (1790000 / (freq.midicps * 16) - 1), 20);
+	var snd = Nes2Square.ar(Impulse.kr(15), 0, 0, 1, 10, 1, 7, 0, 0, (1790000 / (freq.midicps * 16) - 1), 20);
 	snd = snd * EnvGen.ar(Env.adsr(0.05, 0.25, 0.4, 0.1), gate, amp, doneAction:2);
 	snd = Limiter.ar(Compander.ar(snd, snd, 0.1, 0.01, 4), 1);
 	OffsetOut.ar(out, snd!2 * amp)
@@ -28,8 +28,8 @@ SynthDef(\fx, { |in, out|
 	ReplaceOut.ar(out, snd);
 }).memStore;
 
-group = Group.new;
-effects = Synth.tail(group, \fx);
+//group = Group.new;
+//effects = Synth.tail(group, \fx);
 
 // VOICE / MELODY
 voiceButtons = #[b1,b2,b3,b4,b6,b8];
@@ -40,7 +40,7 @@ voiceDict = ();
 voicePairs.do{ |pair|
 	~gamepad[pair[0]].action_({ |v|
 		v.value.coin.if {
-			voiceDict[pair[0]] = Synth(\test, [\freq, pair[1], group, \addToHead]);
+			voiceDict[pair[0]] = Synth(\test, [\freq, pair[1]]);
 		}{
 			voiceDict[pair[0]].set(\gate, 0);
 		}
