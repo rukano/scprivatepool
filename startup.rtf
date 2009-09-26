@@ -1,0 +1,149 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf110
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red191\green0\blue0;\red0\green0\blue0;\red0\green0\blue191;
+\red96\green96\blue96;}
+\deftab560
+\pard\pardeftab560\ql\qnatural
+
+\f0\fs18 \cf2 ///////////////MENU BAR////////////////////////////\cf3 \
+\cf4 var\cf3  menuTools =  \cf4 SCMenuGroup\cf3 (\cf4 nil\cf3 , \cf5 "Tools"\cf3 , 10);\
+\
+\cf4 var\cf3  recManager = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Recording Manager"\cf3 );\
+\cf4 var\cf3  openRecordings = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Open Recordings"\cf3 );\
+\cf4 var\cf3  openExtensions = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Open Extensions"\cf3 );\
+\
+\cf4 var\cf3  sep1 = \cf4 SCMenuSeparator\cf3 (menuTools, 3); \cf2 // add a separator\cf3 \
+\
+\cf4 var\cf3  initMidi = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Init MIDI Client"\cf3 );\
+\cf4 var\cf3  initGamepad = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Init Gamepad - Logitec"\cf3 );\
+\
+\cf4 var\cf3  sep2 = \cf4 SCMenuSeparator\cf3 (menuTools, 6); \cf2 // add a separator\cf3 \
+\
+\cf4 var\cf3  docAutocomplete = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Turn On Autocomplete"\cf3 );\
+\cf4 var\cf3  countLines = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Count lines"\cf3 );\
+\cf4 var\cf3  loadMySynths = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Load My Synths"\cf3 );\
+\
+\cf4 var\cf3  sep3 = \cf4 SCMenuSeparator\cf3 (menuTools, 10); \cf2 // add a separator\cf3 \
+\
+\cf4 var\cf3  startHistory = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Start History"\cf3 );\
+\cf4 var\cf3  stopHistory = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Stop History"\cf3 );\
+\
+\cf4 var\cf3  gitCommit = \cf4 SCMenuItem\cf3 (menuTools, \cf5 "Git Commit"\cf3 );\
+\
+\cf2 //////////////ACTIONS//////////////////////////\cf3 \
+\
+recManager.action = \{ \cf4 RecordingManager\cf3 .new \};\
+recManager.setShortCut(\cf5 "R"\cf3 , \cf4 false\cf3 , \cf4 false\cf3 ); \cf2 // CMD+SHIFT+r\cf3 \
+openRecordings.action = \{ (\cf5 "open"\cf3  + \cf4 thisProcess\cf3 .platform.recordingsDir.quote).unixCmd \};\
+openExtensions.action = \{ (\cf5 "open"\cf3  + \cf4 Platform\cf3 .userAppSupportDir.quote).unixCmd \};\
+openExtensions.setShortCut(\cf5 "e"\cf3 , \cf4 true\cf3 , \cf4 true\cf3 );\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf2 //////////////////////////////////////////////\cf3 \
+\pard\pardeftab560\ql\qnatural
+\cf3 initMidi.action = \{ \cf4 MIDIClient\cf3 .init \};\
+initGamepad.action = \{\
+	\cf4 var\cf3  deviceID, spec = \cf5 "Logitech"\cf3 ;\
+	\cf4 GeneralHID\cf3 .buildDeviceList;\
+	deviceID = \cf4 GeneralHID\cf3 .findBy( 1133 );\
+	~gamepad = \cf4 GeneralHID\cf3 .open( deviceID );\
+	postf(\cf5 "\\n\\t***\\tInitialized % Gamepad Environment >>>gamepad<<<\\nuse ~gamepad to access the instance\\n"\cf3 , spec);\
+	\cf4 GeneralHID\cf3 .startEventLoop;\
+	postf(\cf5 "\\n>>>Event loop runing: ___%___\\n"\cf3 , \cf4 GeneralHID\cf3 .eventLoopIsRunning.asString);\
+	~gamepad.setSpec(spec);\
+	postf(\cf5 "Spec map setted to: %\\nFollowing pseudomethods acces the states and actions:\\n"\cf3 , spec);\
+	~gamepad.spec.map.keys.asList.sort.do\{ \cf4 |key|\cf3 \
+		postf(\cf5 "~gamepad['%']\\n"\cf3 , key);\
+	\};\
+\};\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf2 /////////////////////////////////////////////\cf3 \
+docAutocomplete.action = \{ \cf4 Document\cf3 .current.autoComplete; \};\
+\pard\pardeftab560\ql\qnatural
+\cf3 countLines.action_(\{ (\cf4 Document\cf3 .current.string.occurrencesOf($\\n) + 1).postln; \});\
+loadMySynths.action_(\{ (\cf4 Platform\cf3 .userAppSupportDir +/+ \cf5 "__SYNTHLIB.scd"\cf3 ).load; \});\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf2 /////////////////////////////////////////////\cf3 \
+\pard\pardeftab560\ql\qnatural
+\cf3 startHistory.action_(\{\
+	\cf4 History\cf3 .clear.end;\
+	\cf4 History\cf3 .start;\
+\});\
+stopHistory.action_(\{\
+	\cf4 History\cf3 .end;\
+	\cf4 History\cf3 .document;	\cf2 // you have to manually choose your destination !\cf3 \
+\});\
+gitCommit.action_(\{\
+	\cf4 var\cf3  myGitDir = \cf5 "~/dev/__git/scprivatepool/"\cf3 ;\
+	\cf4 var\cf3  win = \cf4 Window\cf3 (\cf5 "commit msg"\cf3 ,\
+		\cf4 Rect\cf3 (\
+			(\cf4 Window\cf3 .screenBounds.width/2)-200,\
+			(\cf4 Window\cf3 .screenBounds.height/2)-35,\
+			400,\
+			70\
+		)\
+	).front;\
+	\cf4 var\cf3  txt = \cf4 TextField\cf3 (win, \cf4 Rect\cf3 (10, 10, 380, 20));\
+	\cf4 var\cf3  btn = \cf4 Button\cf3 (win, \cf4 Rect\cf3 (150, 40, 100, 20));\
+\
+	txt.string_(\cf5 "updated my sc repository with new code"\cf3 );\
+	btn.states_([[\cf5 "commit"\cf3 ]]);\
+	btn.action_(\{\
+		runInTerminal(\
+			\cf5 "cd "\cf3  ++ myGitDir ++ \cf5 " && "\cf3  ++\
+			\cf5 "git add ."\cf3  ++ \cf5 " && "\cf3  ++\
+			\cf5 "git commit -am '"\cf3  ++ txt.string ++ \cf5 "' && "\cf3  ++\
+			\cf5 "git push"\cf3 \
+		);\
+		win.close;\
+	\});\
+\});\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf2 ////////////////SERVERS///////////////////////////\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural
+\cf3 s = \cf4 Server\cf3 .default;\
+\cf4 Server\cf3 .default = \cf4 Server\cf3 .local;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab560\ql\qnatural\pardirnatural
+\cf2 // Server.local.options.device = "aggro";\cf3 \
+\cf2 // Server.internal.options.device = "aggro";\cf3 \
+\cf2 // Server.local.options.device = "MOTU UltraLite";\cf3 \
+\cf2 // Server.internal.options.device = "MOTU UltraLite";\cf3 \
+\cf2 // Server.default.options.numOutputBusChannels=16;\cf3 \
+\cf2 // ServerOptions.new.numOutputBusChannels=20;\cf3 \
+\cf2 //s.recSampleFormat_("int16");\cf3 \
+\
+\cf2 // close the shit\cf3 \
+\cf2 //Server.internal.window.close;\cf3 \
+\cf2 //Server.local.window.close;\cf3 \
+\
+\cf2 // make little ones\cf3 \
+\cf2 //Server.internal.gui(Rect(0,0,270,30));\cf3 \
+\cf2 //Server.local.gui(Rect(270,0,270,30));\cf3 \
+\
+\cf2 // boot\cf3 \
+s.boot;\
+\
+\cf2 ////////////////DEFAULT_ACTIONS///////////////////\cf3 \
+\cf2 //Document.autoComplete; //Open New AutoComplete Document\cf3 \
+\
+\cf4 Document\cf3 .listener\
+	.title_(\cf5 "console"\cf3 )\
+	.bounds_(\cf4 Rect\cf3 (\cf4 Window\cf3 .screenBounds.width-500, 0, 500, \cf4 Window\cf3 .screenBounds.height))\
+	.background_(\cf4 Color\cf3 .new(0,0,0,0.96))\
+	.stringColor_(\cf4 Color\cf3 .green)\
+	.alwaysOnTop_(\cf4 false\cf3 );\
+\cf4 Document\cf3 .postColor_(\cf4 Color\cf3 .green);\
+\
+\pard\pardeftab560\ql\qnatural
+\cf4 AutoBackup\cf3 .start;\
+\
+\pard\pardeftab560\li1140\fi-1140\ql\qnatural
+\cf2 //ToolsMenu.add(\cf3 \
+\cf2 //	[ \cf3 \
+\cf2 //	Platform.userAppSupportDir +/+ "startup.rtf",\cf3 \
+\pard\pardeftab560\ql\qnatural
+\cf2 //	Platform.userAppSupportDir.quote\cf3 \
+\cf2 //	];\cf3 \
+\cf2 //); \cf3 \
+\
+}
