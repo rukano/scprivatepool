@@ -46,7 +46,7 @@ p = ProxySpace.push(s)
 
 // - 0:2:57.83 -  
 (
-Tdef(\texture, {
+Tdef(\main, {
 	inf.do{
 		~snd = { Splay.ar(SinOsc.ar(Array.rand(16, 100, 800), mul:0.25)) * \amp.kr(0.1) };
 		rrand(4,8).wait;
@@ -59,7 +59,7 @@ Tdef(\texture, {
 
 // - 0:3:14.06 -  
 (
-Tdef(\texture, {
+Tdef(\main, {
 	inf.do{
 		~snd = { Splay.ar(SinOsc.ar(Array.rand(16, 100, 800), mul:0.25)) * \amp.kr(0.1) };
 		rrand(5,12).wait;
@@ -374,7 +374,7 @@ Tdef(\texture, {
 
 // - 0:18:41.93 -  
 (
-Tdef(\texture, {
+Tdef(\main, {
 	inf.do{
 		~snd = {
 			var array = Array.rand(16, 100, 800);
@@ -389,7 +389,7 @@ Tdef(\texture, {
 
 // - 0:19:24.9 -  
 (
-Tdef(\texture, {
+Tdef(\main, {
 	inf.do{
 		~snd = {
 			var array = Array.rand(16, 100, 800);
@@ -521,4 +521,4 @@ Tdef(\texture, {
 ~ping[12] = \filter -> { |in| CombC.ar(in, 5, 1, 5) }
 
 // - 0:23:50.81 -  
-~p.end(30)
+p.end(30)
