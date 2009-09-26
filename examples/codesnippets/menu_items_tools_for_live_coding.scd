@@ -1,3 +1,5 @@
+var menuTools =  SCMenuGroup(nil, "Tools", 10);
+
 var startHistory = SCMenuItem(menuTools, "Start History");
 var stopHistory = SCMenuItem(menuTools, "Stop History");
 var gitCommit = SCMenuItem(menuTools, "Git Commit");
