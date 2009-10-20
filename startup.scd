@@ -188,7 +188,11 @@ s.boot;
 
 Document.listener
 	.title_("console")
-	.bounds_(Rect(Window.screenBounds.width-500, 0, 500, Window.screenBounds.height))
+	.bounds_(
+		(Window.screenBounds.width-400 @ 0) @
+		(Window.screenBounds.width @ Window.screenBounds.height)
+	)
+	.font_(Font("Monaco", 9))
 	.background_(Color.new(0,0,0,0.96))
 	.stringColor_(Color.green)
 	.alwaysOnTop_(false);
