@@ -184,8 +184,6 @@ s.options.memSize_(2**15);
 s.boot;
 
 ////////////////DEFAULT_ACTIONS///////////////////
-//Document.autoComplete; //Open New AutoComplete Document
-
 Document.listener
 	.title_("console")
 	.bounds_(
@@ -197,6 +195,20 @@ Document.listener
 	.stringColor_(Color.green)
 	.alwaysOnTop_(false);
 Document.postColor_(Color.green);
+
+Document.themes.put
+(\rukano,
+	(
+		classColor: Color.new255(53, 74, 187),
+		textColor: Color.new255(0, 0, 0),
+		stringColor: Color.new255(96, 129, 158),
+		commentColor: Color.new255(206, 27, 28),
+		symbolColor: Color.new255(57, 154, 20),
+		numberColor: Color.new255(157, 80, 65)
+	)
+);
+
+Document.setTheme(\rukano);
 
 AutoBackup.start;
 
