@@ -19,10 +19,11 @@ SynthDef(\buffer, { |buffer, amp=1, pan=0, rate=1|
 
 ------NEEDS A KICK AND SNARE SAMPLE!!!
 
-b = Buffer.read(s, "/Volumes/DATA/samples/futuremusic213/Dubstep_1/04(70BPM)/DrumHits/Kit04_Kick.wav");
-c = Buffer.read(s,"/Volumes/DATA/samples/futuremusic213/Dubstep_5/No_FX/DS_Snare02.wav" );
+b = Buffer.read(s, Document.current.path.dirname.dirname ++ "/_samples/Kit04_Kick.wav");
+c = Buffer.read(s, Document.current.path.dirname.dirname ++ "/_samples/DS_Snare02.wav" );
+// b.play
 
-b.play
+Document.current.path.dirname.dirname
 
 */
 
