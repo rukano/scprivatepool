@@ -1,10 +1,22 @@
-SynthDef(\bass,{ |out, freq=440, sustain=1, gate=1, amp=0.1|
+SynthDef(\bass_distorted,{ |out, freq=440, sustain=1, gate=1, amp=0.1|
 	var snd, env, fenv, harm;
 	harm = [1,1.1,2,2.2,3.5,4.1,5.51];
 	snd = Saw.ar(freq*harm,mul:0.1).sum.distort * 5;
 	env = EnvGen.kr(Env.adsr(0.001,0.2,0.9,0.25), gate, 2, doneAction:2);
 	fenv = EnvGen.kr(Env.adsr(0.01,0.3,0.25,0.1),gate,freq*4,freq);
 	snd = RLPF.ar(snd, fenv, 0.01).softclip * env * amp;
+	OffsetOut.ar(out, (snd!2));
+}).memStore;
+
+SynthDef(\bass_filtered,{ |out, freq=440, sustain=1, gate=1, amp=0.1|
+	var snd, env, fenv, harm;
+	harm = [1, 2.0, 2.01];
+	snd = FreeVerb.ar(Saw.ar(freq*harm,mul:0.1).sum);
+	snd = snd + SinOsc.ar(freq, mul:0.5);
+	env = EnvGen.kr(Env.adsr(0.001,0.8,0.7,0.25), gate, 2, doneAction:2);
+	fenv = EnvGen.kr(Env.adsr(1.0,0.8,0.75,0.8),gate,freq*35,freq/2);
+	snd = RLPF.ar(snd, fenv, 0.2).softclip * env * amp * 5;
+	
 	OffsetOut.ar(out, (snd!2));
 }).memStore;
 
@@ -16,21 +28,6 @@ SynthDef(\buffer, { |buffer, amp=1, pan=0, rate=1|
 
 
 /*
-------ALTERNATIVE BASS SYNTHS
-
-SynthDef(\bass,{ |out, freq=440, sustain=1, gate=1, amp=0.1|
-	var snd, env, fenv, harm;
-	harm = [1, 2.0, 2.01];
-	snd = FreeVerb.ar(Saw.ar(freq*harm,mul:0.1).sum);
-	snd = snd + SinOsc.ar(freq, mul:0.5);
-	env = EnvGen.kr(Env.adsr(0.001,0.8,0.7,0.25), gate, 2, doneAction:2);
-	fenv = EnvGen.kr(Env.adsr(1.0,0.8,0.75,0.8),gate,freq*35,freq/2);
-	snd = RLPF.ar(snd, fenv, 0.2).softclip * env * amp;
-	
-	OffsetOut.ar(out, (snd!2));
-}).memStore;
-
-
 ------NEEDS A KICK AND SNARE SAMPLE!!!
 
 b = Buffer.read(s, Document.current.path.dirname.dirname ++ "/_samples/Kit04_Kick.wav");
@@ -42,7 +39,7 @@ Document.current.path.dirname.dirname
 */
 
 Pdef(\bass,
-	PmonoArtic(\bass,
+	PmonoArtic(\bass_distorted,		// if using Pbind one could use both synths!
 		\scale, Scale.diminished2,
 		\octave, 2,
 		\degree, Pseq(
