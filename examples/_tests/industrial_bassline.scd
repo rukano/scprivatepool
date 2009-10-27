@@ -16,6 +16,20 @@ SynthDef(\buffer, { |buffer, amp=1, pan=0, rate=1|
 
 
 /*
+------ALTERNATIVE BASS SYNTHS
+
+SynthDef(\bass,{ |out, freq=440, sustain=1, gate=1, amp=0.1|
+	var snd, env, fenv, harm;
+	harm = [1, 2.0, 2.01];
+	snd = FreeVerb.ar(Saw.ar(freq*harm,mul:0.1).sum);
+	snd = snd + SinOsc.ar(freq, mul:0.5);
+	env = EnvGen.kr(Env.adsr(0.001,0.8,0.7,0.25), gate, 2, doneAction:2);
+	fenv = EnvGen.kr(Env.adsr(1.0,0.8,0.75,0.8),gate,freq*35,freq/2);
+	snd = RLPF.ar(snd, fenv, 0.2).softclip * env * amp;
+	
+	OffsetOut.ar(out, (snd!2));
+}).memStore;
+
 
 ------NEEDS A KICK AND SNARE SAMPLE!!!
 
