@@ -50,14 +50,14 @@ initGamepad.action = {
 	var deviceID, spec = "Logitech";
 	GeneralHID.buildDeviceList;
 	deviceID = GeneralHID.findBy( 1133 );
-	~gamepad = GeneralHID.open( deviceID );
+	g = GeneralHID.open( deviceID );
 	postf("\n\t***\tInitialized % Gamepad Environment >>>gamepad<<<\nuse ~gamepad to access the instance\n", spec);
 	GeneralHID.startEventLoop;
 	postf("\n>>>Event loop runing: ___%___\n", GeneralHID.eventLoopIsRunning.asString);
-	~gamepad.setSpec(spec);
+	g.setSpec(spec);
 	postf("Spec map setted to: %\nFollowing pseudomethods acces the states and actions:\n", spec);
-	~gamepad.spec.map.keys.asList.sort.do{ |key|
-		postf("~gamepad['%']\n", key);
+	g.spec.map.keys.asList.sort.do{ |key|
+		postf("g['%']\n", key);
 	};
 };
 /////////////////////////////////////////////
