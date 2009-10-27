@@ -40,7 +40,7 @@ Pdef(\bass,
 			inf
 		),
 		\legato, Pwhite(0.9,1.1,inf),
-		\amp, 0.1,
+		\amp, 0.15,
 		\dur, 0.2
 	)
 ).play;
