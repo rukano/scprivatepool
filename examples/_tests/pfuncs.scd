@@ -28,6 +28,6 @@ Pdef(\m,
 		}),
 		\legato, Pbrown(1.1, 1.8, 0.1),
 		\amp, 1,
-		\dur, Pstutter(Prand([2,4,8,16],inf), Prand([1,2,4,8]/16,inf));
+		\dur, Pstutter(Prand([2,4,8,16],inf), Prand([1,2,4,8,16,32]/32,inf));
 	)
 ).play
