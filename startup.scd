@@ -64,7 +64,7 @@ initGamepad.action = {
 docAutocomplete.action = { Document.current.autoComplete; };
 countLines.action_({ (Document.current.string.occurrencesOf($\n) + 1).postln; });
 countChars.action_({ Document.current.string.size.postln });
-loadMySynths.action_({ (Platform.userAppSupportDir +/+ "__SYNTHLIB.scd").load; });
+loadMySynths.action_({ (Platform.userAppSupportDir +/+ "synths.scd").load; });
 /////////////////////////////////////////////
 startHistory.action_({
 	History.clear.end;
