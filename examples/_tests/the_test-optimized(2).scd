@@ -128,5 +128,6 @@ Tdef(\bass, {
 	
 	// Gui for all Tdefs (one of the good things of Tdef)
 	TdefAllGui.new;
+	c.gui;
 );
 )
