@@ -1,8 +1,18 @@
 This is my own private SuperCollider code pool.
-I also Have a SVN version in Google Code, but GIT seems to be more promising.
-The idea is to ublish here the mini apps I make and code I find interesting.
-It's just a private pool, so don't expect the best programming skills or masterworks.
+It's just a private pool (mostly for means of synchronization between my machines), so don't expect the best programming skills or masterworks.
+It includes:
+* startup.rtf file (goes in the SC App Support dir.)
+* update.sh (a shell script to update all my SC related stuff, copied from a scrip by cappelnord)
+* synths I use frequently (and can be loaded from the menu bar if my startup is used)
+* my SC tweets
+* classes I'm working on and some usable
+* livecoding history (protocoled and unprotocoled sessions if I forget to start the History in the middle of a Jam)
+* some projects, applications and tools I made in the past or I'm still working on
+* lots of code snippets, tests and examples
 
 All code made by me except where indicated.
 
 http://rukano.de
+
+(feel free to send me your comments, problems with my code and/or corrections)
+r u k a n o __a-t__ g_m_a_i_l [*dot*] c_o_m
