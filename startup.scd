@@ -8,30 +8,31 @@ var openExtensions = SCMenuItem(menuTools, "Open Extensions");
 var sep1 = SCMenuSeparator(menuTools, 3); // add a separator
 
 var initMidi = SCMenuItem(menuTools, "Init MIDI Client");
-var initGamepad = SCMenuItem(menuTools, "Init Gamepad - Logitec");
+var initGamepad = SCMenuItem(menuTools, "Init Gamepad - Logitech");
+var announceOSC = SCMenuItem(menuTools, "Announce OSC");
 
-var sep2 = SCMenuSeparator(menuTools, 6); // add a separator
+var sep2 = SCMenuSeparator(menuTools, 7); // add a separator
 
 var docAutocomplete = SCMenuItem(menuTools, "Turn On Autocomplete");
 var countLines = SCMenuItem(menuTools, "Count lines");
 var countChars = SCMenuItem(menuTools, "Count characters");
 
-var sep3 = SCMenuSeparator(menuTools, 10); // add a separator
+var sep3 = SCMenuSeparator(menuTools, 11); // add a separator
 
 var loadMySynths = SCMenuItem(menuTools, "Load My Synths");
 
-var sep4 = SCMenuSeparator(menuTools, 12); // add a separator
+var sep4 = SCMenuSeparator(menuTools, 13); // add a separator
 
 var startHistory = SCMenuItem(menuTools, "Start History");
 var stopHistory = SCMenuItem(menuTools, "Stop History");
 
-var sep5 = SCMenuSeparator(menuTools, 15); // add a separator
+var sep5 = SCMenuSeparator(menuTools, 16); // add a separator
 
 var gitCommit = SCMenuItem(menuTools, "GIT Commit");
 var svnCommit = SCMenuItem(menuTools, "SVN Commit");
 var svnUpdate = SCMenuItem(menuTools, "SVN Update");
 
-var sep6 = SCMenuSeparator(menuTools, 19); // add a separator
+var sep6 = SCMenuSeparator(menuTools, 20); // add a separator
 
 var eduWindow = SCMenuItem(menuTools, "Layout > EDU");
 var normalWindow = SCMenuItem(menuTools, "Layout > DEV");
@@ -60,6 +61,13 @@ initGamepad.action = {
 		postf("g['%']\n", key);
 	};
 };
+announceOSC.action_({
+	"open -a AnnounceOSC.app".unixCmd;
+	"If you don't have AnnounceOSC.app you have to download it from:".postln;
+	"http://cloud.github.com/downloads/cappelnord/AnnounceOSC/AnnounceOSCMacApp.zip".postln;
+	"and put it in your applications folder".postln;
+	"";
+});
 /////////////////////////////////////////////
 docAutocomplete.action = { Document.current.autoComplete; };
 countLines.action_({ (Document.current.string.occurrencesOf($\n) + 1).postln; });

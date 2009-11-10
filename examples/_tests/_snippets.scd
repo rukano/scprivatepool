@@ -22,10 +22,17 @@ NetAddr.langPort
 215.asDigits(3)
 0.5pi
 
-1b
-1s
+1b	// flat
+1s	// sharp
 
 // classes
 Scale
 Tuning
 Pdefn
+
+// synth desc lib
+SynthDescLib.global.browse;
+SynthDescLib.global.synthDescs.at(\default);
+SynthDescLib.global.synthDescs.at(\default).makeWindow; // nice!
+SynthDescLib.global.synthDescs.keys; // all stored synths
+SynthDef(..., {}, metadata: (specs: (cutoff: \freq, volume: \amp)))
