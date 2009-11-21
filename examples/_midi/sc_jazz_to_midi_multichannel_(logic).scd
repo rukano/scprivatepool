@@ -1,8 +1,10 @@
+// MIDIClient.init
 m = MIDIOut(0)
 
 c = TempoClock.new(1).permanent_(true)
 (
-var scale = Scale.dorian;
+var scale = Scale.choose;
+
 Pdef(\banjo,
 	Pbind(
 		\type, \midi,
