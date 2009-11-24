@@ -211,13 +211,13 @@ Document.listener
 		(Window.screenBounds.width-400 @ 0) @
 		(Window.screenBounds.width @ Window.screenBounds.height)
 	)
-	.font_(Font("Inconsolata", 12))
+	.font_(Font("Monaco", 12))
 	.background_(Color.new(0,0,0,0.96))
 	.stringColor_(Color.green)
 	.alwaysOnTop_(false);
 Document.postColor_(Color.green);
 
-CocoaDocument.defaultFont_(Font("Inconsolata", 12));
+CocoaDocument.defaultFont_(Font("Monaco", 12));
 
 
 Document.themes.put
@@ -233,7 +233,7 @@ Document.themes.put
 );
 
 Document.setTheme(\rukano);
-
+QuarkSVNRepository.svnpath_("/usr/bin/svn");
 AutoBackup.start;
 
 //ToolsMenu.add(
