@@ -220,7 +220,7 @@ Document.themes.put
 );
 
 Document.setTheme(\rukano);
-
+QuarkSVNRepository.svnpath_("/usr/bin/svn");
 AutoBackup.start;
 
 //ToolsMenu.add(
