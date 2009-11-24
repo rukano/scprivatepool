@@ -23,16 +23,17 @@ var loadMySynths = SCMenuItem(menuTools, "Load My Synths");
 
 var sep4 = SCMenuSeparator(menuTools, 13); // add a separator
 
+var proxySpace = SCMenuItem(menuTools, "ProxySpace push");
 var startHistory = SCMenuItem(menuTools, "Start History");
 var stopHistory = SCMenuItem(menuTools, "Stop History");
 
-var sep5 = SCMenuSeparator(menuTools, 16); // add a separator
+var sep5 = SCMenuSeparator(menuTools, 17); // add a separator
 
 var gitCommit = SCMenuItem(menuTools, "GIT Commit");
 var svnCommit = SCMenuItem(menuTools, "SVN Commit");
 var svnUpdate = SCMenuItem(menuTools, "SVN Update");
 
-var sep6 = SCMenuSeparator(menuTools, 20); // add a separator
+var sep6 = SCMenuSeparator(menuTools, 21); // add a separator
 
 var eduWindow = SCMenuItem(menuTools, "Layout > EDU");
 var normalWindow = SCMenuItem(menuTools, "Layout > DEV");
@@ -74,6 +75,18 @@ countLines.action_({ (Document.current.string.occurrencesOf($\n) + 1).postln; })
 countChars.action_({ Document.current.string.size.postln });
 loadMySynths.action_({ (Platform.userAppSupportDir +/+ "synths.scd").load; });
 /////////////////////////////////////////////
+
+proxySpace.action = {
+	p = ProxySpace.push(s.boot);
+	"ProxySpace pushed on default server".postln;
+	fork{
+		1.wait;
+		~out.play;	"~out.ar is playing".postln;
+		~snd.ar(2);	"~snd.ar is initialized (.ar) 2 channels".postln;
+	};
+};
+proxySpace.setShortCut("p", true, false); // CMD+SHIFT+r
+
 startHistory.action_({
 	History.clear.end;
 	History.start;
