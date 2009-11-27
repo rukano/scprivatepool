@@ -187,8 +187,8 @@ s.options.memSize_(2**15);
 
 // Server.local.options.device = "aggro";
 // Server.internal.options.device = "aggro";
-// Server.local.options.device = "MOTU UltraLite";
-// Server.internal.options.device = "MOTU UltraLite";
+ Server.local.options.device = "MOTU UltraLite";
+ Server.internal.options.device = "MOTU UltraLite";
 // Server.default.options.numOutputBusChannels=16;
 // ServerOptions.new.numOutputBusChannels=20;
 //s.recSampleFormat_("int16");
