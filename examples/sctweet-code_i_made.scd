@@ -1,3 +1,6 @@
+play{Splay.ar(Ringz.ar(Decay2.ar(Impulse.ar([2,3]),0.0001,0.01),Array.geom(9,40,1.75)*LFDNoise3.ar(4,0.1),0.9,0.1))} // #supercollider #sc
+play{Ringz.ar(Decay2.ar(TDuty.ar(Dseq([1,1,2,1,1,2,1,4]/8,inf)),0.00001,0.1),Array.geom(12,50,1.7)*LFDNoise3.kr(0.5,0.01),1,0.01).sum!2} #sc
+play{Ringz.ar(Decay2.ar(TDuty.ar(Dseq([1,1,2,1,1,2,1,4]/10,inf)),0,0.001),Array.geom(12,50,1.1)*LFNoise2.kr(0.5,0.02,1),1,0.01).sum!2}// #sc
 play{a=LFNoise0;b=FBSineC.ar(a.kr(4,2e4,2e4),a.kr(10,16,17),1,1.005,0.7)!2;Latch.ar(b,Impulse.ar(a.kr(0.5,5e3,4e3)))*a.kr(5,0.4,0.5)}// #sc
 play{RLPF.ar(Latch.ar(SinOsc.ar([100,100.5])!2,Impulse.ar(Duty.kr(Dseq([2,1]/4,inf),0,Drand((67,67.2..70),inf)))),800)} // #sc _dubsteppy_
 play{CombN.ar(Splay.ar(Pulse.ar(Gendy3.kr([1,2,4,6])+LFNoise0.ar(4,6,Gendy3.kr(5,freq:[10,99])))*Gendy2.ar([0,1],maxfreq:[55,99])),3,0.4,2)}
