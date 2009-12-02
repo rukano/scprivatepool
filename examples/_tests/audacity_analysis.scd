@@ -19,7 +19,7 @@ p = (r.size-1).collect{ |i|
 )
 
 // Threshold, we don't want 2046 SinOscs
-d = p.select({ |pair| pair[1] > -20.0 })
+d = p.select({ |pair| pair[1] > -40.0 })
 
 // playit
 play{SinOsc.ar(d.flop[0], 0, d.flop[1].dbamp * 0.05).sum * EnvGen.ar(Env.perc(0,8), doneAction:2)!2}
