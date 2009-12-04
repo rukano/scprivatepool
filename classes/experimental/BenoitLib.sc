@@ -29,7 +29,7 @@ Benoit : Object {
 				inf.do{ |i|
 					cnt.string_(i.asTimeString);
 					uhr.string_(Date.getDate.format("%H:%M:%S"));
-					win.background_(Color.red(i/time)); // turn red over 10 minutes!
+					win.view.background_(Color.red(i/time)); // turn red over 10 minutes!
 					slide.value_(i/time);
 					// warnings
 					case(
