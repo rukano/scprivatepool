@@ -31,13 +31,15 @@ var sep5 = SCMenuSeparator(menuTools, 17); // add a separator
 
 var gitCommit = SCMenuItem(menuTools, "GIT Commit");
 var svnCommit = SCMenuItem(menuTools, "SVN Commit");
-var svnUpdate = SCMenuItem(menuTools, "SVN Update");
 
-var sep6 = SCMenuSeparator(menuTools, 21); // add a separator
+var sep6 = SCMenuSeparator(menuTools, 20); // add a separator
 
 var eduWindow = SCMenuItem(menuTools, "Layout > EDU");
 var normalWindow = SCMenuItem(menuTools, "Layout > DEV");
 
+var sep7 = SCMenuSeparator(menuTools, 23); // add a separator
+
+var rebootServer = SCMenuItem(menuTools, "REBOOT!");
 
 //////////////ACTIONS//////////////////////////
 
@@ -172,13 +174,12 @@ normalWindow.action_({
 	Document.postColor_(Color.green);
 });
 
-////////////////SERVERS///////////////////////////
+/////////////////////////////////////////////////
 
-svnUpdate.action_({
-	var mySvnDir = "~/dev/__svn/sctutorium/";
-	runInTerminal( "cd " ++ mySvnDir ++ " && " ++ "svn update" );
+rebootServer.setShortCut("k", true, true); // CMD+SHIFT+r
+rebootServer.action_({
+	Server.default.reboot;
 });
-
 
 ////////////////SERVERS///////////////////////////
 s = Server.default;
