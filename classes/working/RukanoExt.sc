@@ -9,5 +9,7 @@
 	}
 	
 	// TODO: xrange !!	
-
+	bpm {
+		^this/60
+	}
 }

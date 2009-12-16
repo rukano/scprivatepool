@@ -46,8 +46,9 @@ SynthDef(\vocoder, { |buffer, rate=1, freq=220|
 );
 //_______BUFFERplayer
 (
-SynthDef(\player, { |buffer, amp=1, pan=0, rate=1|
-	var snd = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer) * rate, doneAction:2);
+SynthDef(\player, { |buffer, amp=1, pan=0, rate=1, sustain|
+	var snd = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer) * rate);
+	snd = snd * EnvGen.ar(Env.linen(0,sustain,0), doneAction:2);
 	snd = Pan2.ar(snd, pan);
 	OffsetOut.ar(0, snd * amp);
 }).memStore;

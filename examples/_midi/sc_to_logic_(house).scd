@@ -1,5 +1,7 @@
+/*
 m = MIDIOut(0)
 s.latency=nil
+*/
 
 (
 
@@ -12,19 +14,19 @@ Pdef(\beat1,
 		\amp, 0.8, 
 		\dur, Pseq([2,1,3,2]/4, inf)	
 	)
-).play;
+).play(quant:4);
 
 Pdef(\chords,
 	Pbind(
 		\type, \midi,
 		\midiout, m,
-		\midinote, Pstutter(20, Pseq([60,62]+12,inf)),
-		\chan, 1,
-		\legato, 0.7,
-		\amp, Pwhite(0.5,0.8,inf), 
-		\dur, Pseq([4,4,2,4,2]/4, inf)	
+		\midinote, Pstutter(2*4, Pseq([60,62],inf)),
+		\chan, 3,
+		\sustain, 0.1,
+		\amp, Pwhite(0.4,0.6,inf), 
+		\dur, Pseq([1.5,2.5], inf)	
 	)
-).play;
+).play(quant:4);
 
 Pdef(\kick,
 	Pbind(
@@ -34,54 +36,35 @@ Pdef(\kick,
 		\chan, 1,
 		\legato, 0.7,
 		\amp, 0.5, 
-		\dur, Pseq([Pn(4,7), Pn(2,2)]/4, inf)	
+		\dur, Pseq([4,4,4,4,4,4,4,2,2]/4, inf)	
 	)
-).play;
+).play(quant:4);
 
-/*Pdef(\ambient,
+
+Pdef(\bass,
 	Pbind(
 		\type, \midi,
 		\midiout, m,
-		\scale, Scale.minor,
-		\octave, 3,
-		\ctranspose, 0,
-//		\root, Pstutter(32, Pseq([1,2],inf)),
-		\degree, Prand([0,2,4,5],inf),
-//		\degree, Pseq((0..11),inf),
-		\chan, 2,
-		\legato, 0.9,
+		\midinote, Pstutter(2*4,Pseq([60,62],inf)) - 24,
+		\chan, [2,4],
+		\legato, Pseq([0.5,0.05],inf),
 		\amp, 0.5, 
-//		\dur, 0.25
-		\dur, Pseq([1,1,1,5+8]/2, inf)	
-
+		\dur, 2	
 	)
-).play
-*/
-/*
-Pdef(\kick,
-	Pbind(
-		\type, \midi,
-		\midiout, m,
-		\midinote, Pwrand([64,65,66],[1,5,3].normalizeSum,inf), 
-		\chan, 0,
-		\amp, 0.8, 
-		\dur, Pseq([4,1,1,1,3,3,3,1,1,1,1].normalizeSum*4, inf)	
-	)
-).play;
+).play(quant:4);
 
-Pdef(\melos,
+Pdef(\bells,
 	Pbind(
 		\type, \midi,
 		\midiout, m,
 		\scale, Scale.dorian,
-		\octave, 3,
-		\degree, Prand([0,2,3,5], inf), 
-		\chan, 1,
-		\amp, 0.8, 
-		\dur, Pseq([4,1,1,1,3,3,3,1,1,1,1].normalizeSum*4, inf)	
+		\degree, Pstutter(4, Pseq([Pseq((3..0),2), Pseq((7..3),2)], inf)),
+		\chan, 5,
+		\legato, 0.5,
+		\amp, 0.5, 
+		\dur, 0.5	
 	)
-).play;
-*/
+).play(quant:4)
 )
 
 /*
