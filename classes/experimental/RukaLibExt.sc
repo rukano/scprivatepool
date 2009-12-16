@@ -45,6 +45,28 @@
 
 // Read audacity spectrum file
 
++ String {
+
+	audacitySpectrum {
+		var file, info, lines, array;
+		file = File(this, "r");		// open the file
+		info = file.readAllString;	// read the info	
+		file.close;				// close the file
+		lines = info.findAll("\r");	// find all RETURNs (for indexing)
+
+		// make the array
+		array = (lines.size-1).collect{ |i|
+			var string;
+			(i < (lines.size-1)).if{
+				string = info.copyRange(lines[i]+1, lines[i+1]-1); // copy a line
+				string.split($\t).asFloat; // split tab and make floats
+			}
+		};
+
+		"INFO: Now you have an array with [freq-in-hz, amp-in-db] items".postln;
+		^array;
+	}
+}
 
 // array pairs as dictionary
 
