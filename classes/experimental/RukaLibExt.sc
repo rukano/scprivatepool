@@ -44,3 +44,29 @@
 }
 
 // Read audacity spectrum file
+
+
+// array pairs as dictionary
+
++ Array {
+
+	asDict {
+		this.size.even.if {
+			var temp = ();
+			this.size.do{ |i|
+				temp[this[i*2]] = this[i*2+1];
+			};
+			^temp;
+		} {
+			"The size of the array should be even".error;
+			^this;
+		};
+	}
+	
+	asEvent {
+		^this.asDict
+	}
+
+}
+
+
