@@ -1,4 +1,3 @@
-(
 var win, cnt, uhr, clock, timer, slide, time, warnwin;
 time = 60*10;		// 10 minutes
 win = Window("benoiTime", Rect(Window.screenBounds.width-175,0,175,75), false, false).front;
@@ -52,4 +51,3 @@ timer = Task({
 	}
 }).play(clock);
 CmdPeriod.doOnce({win.close});
-)
