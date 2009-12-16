@@ -1,6 +1,9 @@
 // my own personal class extensions...
+// Juan A. Romero - 2009
 
-// Make Trigger Button from NodeProxy with \t_trig
+////////////////// JiT ////////////////////////
+
+// Make a BIG Trigger Button from NodeProxy with \t_trig
 
 + NodeProxy {
 
@@ -43,9 +46,13 @@
 	}
 }
 
-// Read audacity spectrum file
+////////////////// STRING ////////////////////////
 
 + String {
+
+// Read an audacity plotted spectrum file (via export)
+// and gives you an array with [freq, amps] in [Hz, dB]
+
 
 	audacitySpectrum {
 		var file, info, lines, array;
@@ -68,9 +75,14 @@
 	}
 }
 
-// array pairs as dictionary
+////////////////// ARRAY ////////////////////////
+
 
 + Array {
+
+	// array pairs as dictionary
+	// to convert the arrays in Pbinds (.patternpairs)
+	// to dictionaries or events
 
 	asDict {
 		this.size.even.if {
