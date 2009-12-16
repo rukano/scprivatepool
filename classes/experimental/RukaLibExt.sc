@@ -52,9 +52,9 @@
 
 	asDict {
 		this.size.even.if {
-			var temp = ();
-			this.size.do{ |i|
-				temp[this[i*2]] = this[i*2+1];
+			var temp = Dictionary.new;
+			(this.size/2).do{ |i|
+				temp.put(this[i*2], this[i*2+1]);
 			};
 			^temp;
 		} {
@@ -64,7 +64,16 @@
 	}
 	
 	asEvent {
-		^this.asDict
+		this.size.even.if {
+			var temp = ();
+			(this.size/2).do{ |i|
+				temp[this[i*2]] = this[i*2+1];
+			};
+			^temp;
+		} {
+			"The size of the array should be even".error;
+			^this;
+		};
 	}
 
 }
