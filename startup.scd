@@ -153,7 +153,7 @@ eduWindow.action_({
 	Document.listener
 		.title_("post")
 		.bounds_((295@0)@(Window.screenBounds.width@250))
-		.font_(Font("Inconsolata", 16))
+		.font_(Font("Inconsolata", 22))
 		.background_(Color.new(0,0,0.4,1))
 		.stringColor_(Color.white)
 		.alwaysOnTop_(true);
@@ -167,7 +167,7 @@ normalWindow.action_({
 			(Window.screenBounds.width-400 @ 0) @
 			(Window.screenBounds.width @ Window.screenBounds.height)
 		)
-		.font_(Font("Inconsolata", 9))
+		.font_(Font("Inconsolata", 14))
 		.background_(Color.new(0,0,0,0.96))
 		.stringColor_(Color.green)
 		.alwaysOnTop_(false);
@@ -212,13 +212,13 @@ Document.listener
 		(Window.screenBounds.width-400 @ 0) @
 		(Window.screenBounds.width @ Window.screenBounds.height)
 	)
-	.font_(Font("Inconsolata", 12))
+	.font_(Font("Inconsolata", 14))
 	.background_(Color.new(0,0,0,0.96))
 	.stringColor_(Color.green)
 	.alwaysOnTop_(false);
 Document.postColor_(Color.green);
 
-CocoaDocument.defaultFont_(Font("Inconsolata", 12));
+CocoaDocument.defaultFont_(Font("Inconsolata", 14));
 
 Document.themes.put
 (\rukano,
