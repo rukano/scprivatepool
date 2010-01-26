@@ -239,7 +239,7 @@ AutoBackup.start;
 // load macros for ZKM!!!
 2.do{"*****************************".postln};
 "Macro Expander Commands:".postln;
-"~/Desktop/zkm/macros.scd".spath.load;
+"~/dev/__git/scprivatepool/macros.scd".spath.load;
 2.do{"*****************************".postln};
 
 
