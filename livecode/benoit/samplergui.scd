@@ -1,11 +1,3 @@
-(
-SynthDef(\rec, { |buf|
-	var in = SoundIn.ar(0);
-	var snd = RecordBuf.ar(in, buf, loop:0, doneAction:2);
-}).memStore;
-)
-
-(
 var num = 4;
 var abc = "abcdefghijklnmopqrstuvwxyz";
 var win = Window("sampler", Rect(200,200,200,(num*25))).front;
@@ -32,4 +24,7 @@ abc[..num].do{ |char|
 	win.view.decorator.nextLine;
 };
 
-)
+SynthDef(\rec, { |buf|
+	var in = SoundIn.ar(0);
+	var snd = RecordBuf.ar(in, buf, loop:0, doneAction:2);
+}).memStore;

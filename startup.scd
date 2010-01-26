@@ -152,7 +152,7 @@ svnCommit.action_({
 eduWindow.action_({
 	Document.listener
 		.title_("post")
-		.bounds_((295@0)@(Window.screenBounds.width@250))
+		.bounds_((0@20)@(Window.screenBounds.width@250))
 		.font_(Font("Inconsolata", 22))
 		.background_(Color.new(0,0,0.4,1))
 		.stringColor_(Color.white)
@@ -235,6 +235,13 @@ Document.themes.put
 Document.setTheme(\rukano);
 QuarkSVNRepository.svnpath_("/usr/bin/svn");
 AutoBackup.start;
+
+// load macros for ZKM!!!
+2.do{"*****************************".postln};
+"Macro Expander Commands:".postln;
+"~/Desktop/zkm/macros.scd".spath.load;
+2.do{"*****************************".postln};
+
 
 //ToolsMenu.add(
 //	[ 
