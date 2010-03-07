@@ -48,8 +48,8 @@ BufferImage {
 	
 	makeWindow {
 		dimensions.y.isNil.if { dimensions.y_((buffer.numFrames/dimensions.x).asInteger) };
-		image.isNil.if {
-			{
+		{
+			image.isNil.if {
 				image = SCImage(dimensions);
 				this.clumpArrayToWidth;
 				(image.height.asInteger).do{ |y|
@@ -57,13 +57,18 @@ BufferImage {
 						image.setColor(colorArray[y][x], x, y);
 					};
 				};
-				window = image.plot(showInfo:false);
-			}.defer;
-		} {
-			{
-				window = image.plot(showInfo:false);
-			}.defer;
-		};
+				this.buildWindow;
+			} {
+				this.buildWindow;
+			};
+		}.defer;
+	}
+	
+	buildWindow {
+		window = image.plot(showInfo:false);
+		window
+			.name_(buffer.path.basename)
+			.acceptsMouseOver_(true);
 	}
 	
 	play {
