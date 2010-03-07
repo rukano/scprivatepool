@@ -64,3 +64,12 @@ Benoit : Object {
 	
 
 }
+
+// convenience methods -> shorter syntax / less typing
+
++ ProxySpace {
+
+	mixer {
+		ProxyMixer(this)
+	}	
+}
