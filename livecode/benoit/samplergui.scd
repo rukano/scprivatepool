@@ -1,4 +1,4 @@
-var num = 4;
+var num = 20;
 var abc = "abcdefghijklnmopqrstuvwxyz";
 var win = Window("sampler", Rect(200,200,200,(num*25))).front;
 win.addFlowLayout((0@0), (0@0));

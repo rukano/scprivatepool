@@ -131,4 +131,16 @@
 
 }
 
+/////////// STRING ///////////////////
 
++ String {
+	
+	repeat { |num|
+		var temp = "";
+		num.do{
+			temp = temp ++ this
+		};
+		^temp
+	}	
+	
+}
