@@ -12,17 +12,10 @@ Benoit : Object {
 
 	// make clock
 	// then Benoit.timer.play ... and so on
-<<<<<<< HEAD:classes/experimental/BenoitLib.sc
-	*makeTimer { |time=60|
-		timer.isNil.if {
-			var win, cnt, uhr, clock, slide, time, warnwin;
-			
-=======
 	*makeTimer { |seconds=60|
 		var win, cnt, uhr, clock, slide, time=seconds, warnwin;
 		timer.isNil.if {
 
->>>>>>> 7f5cafc39437ab0bf3f4f4d620cfd74b915d9e4f:classes/working/BenoitLib.sc
 			/* GUI */
 			win = Window("timer", Rect(Window.screenBounds.width-175,0,175,75), false, true).front;
 			win.alwaysOnTop_(true);
@@ -48,7 +41,6 @@ Benoit : Object {
 //					win.view.background_(Color.red(i/time)); // turn red over 10 minutes!
 					win.view.background_(Color.red); // turn red over 10 minutes!
 					slide.value_(i/time);
-<<<<<<< HEAD:classes/experimental/BenoitLib.sc
 					// warnings
 					case(
 						{ i == 0 },
@@ -74,8 +66,6 @@ Benoit : Object {
 //								}.fork(AppClock);
 							}
 					);
-=======
->>>>>>> 7f5cafc39437ab0bf3f4f4d620cfd74b915d9e4f:classes/working/BenoitLib.sc
 					1.wait;
 				};
 				win.close;
