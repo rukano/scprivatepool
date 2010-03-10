@@ -104,8 +104,8 @@
 	// to dictionaries or events
 
 	asDict {
+		var temp = Dictionary.new;
 		this.size.even.if {
-			var temp = Dictionary.new;
 			(this.size/2).do{ |i|
 				temp.put(this[i*2], this[i*2+1]);
 			};
@@ -117,8 +117,8 @@
 	}
 	
 	asEvent {
+		var temp = ();
 		this.size.even.if {
-			var temp = ();
 			(this.size/2).do{ |i|
 				temp[this[i*2]] = this[i*2+1];
 			};

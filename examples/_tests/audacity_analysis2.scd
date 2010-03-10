@@ -43,6 +43,7 @@ d = list.asArray;
 "";
 )
 
+d.flop[1].plot
 
 // playit
 play{SinOsc.ar(d.flop[0], 0, d.flop[1].dbamp * 0.05).sum * EnvGen.ar(Env.perc(0.001,8), doneAction:2)!2 }
