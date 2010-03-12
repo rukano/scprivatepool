@@ -46,11 +46,11 @@ SynthDef(\vocoder, { |buffer, rate=1, freq=220|
 );
 //_______BUFFERplayer
 (
-SynthDef(\player, { |buffer, amp=1, pan=0, rate=1, sustain|
-	var snd = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer) * rate);
+SynthDef(\player, { |out, buffer, amp=1, pan=0, sustain=0.1, rate=1, t_trig=1, start=0|
+	var snd = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer) * rate, t_trig, BufFrames.kr(buffer) * start);
 	snd = snd * EnvGen.ar(Env.linen(0,sustain,0), doneAction:2);
 	snd = Pan2.ar(snd, pan);
-	OffsetOut.ar(0, snd * amp);
+	OffsetOut.ar(out, snd * amp);
 }).add;
 );
 //_______BUFFERrecorder
@@ -73,7 +73,8 @@ SynthDef(\laser, { |out, pan, amp=0.1|
 //_______PEEEP!!!
 (
 SynthDef(\beep, { |ton =1, out, pan, amp=0.5|
-	var snd = Pulse.ar((600,1000..8000) * ton, mul:0.05).sum * EnvGen.ar(Env.sine(0.1), doneAction:2);
+	var snd = Pulse.ar((600,1000..8000) * ton, mul:0.05).sum;
+	snd = snd * EnvGen.ar(Env.sine(0.1), doneAction:2);
 	snd = Pan2.ar(snd, pan);
 	OffsetOut.ar(out, snd * amp);
 }).add;
