@@ -46,8 +46,8 @@ SynthDef(\vocoder, { |buffer, rate=1, freq=220|
 );
 //_______BUFFERplayer
 (
-SynthDef(\player, { |out, buffer, amp=1, pan=0, sustain=0.1, rate=1, t_trig=1, start=0|
-	var snd = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer) * rate, t_trig, BufFrames.kr(buffer) * start);
+SynthDef(\player, { |out, buffer, amp=1, pan=0, sustain=0.1, rate=1, t_trig=1, start=0, loop=0|
+	var snd = PlayBuf.ar(1, buffer, BufRateScale.kr(buffer) * rate, t_trig, BufFrames.kr(buffer) * start, loop);
 	snd = snd * EnvGen.ar(Env.linen(0,sustain,0), doneAction:2);
 	snd = Pan2.ar(snd, pan);
 	OffsetOut.ar(out, snd * amp);
@@ -83,10 +83,10 @@ SynthDef(\beep, { |ton =1, out, pan, amp=0.5|
 ///////////////////////////////////////////////
 
 (
-SynthDef(\ping, { |out, freq=440, sustain=1, amp=0.1, gate=1, saw=1|
-	var snd = SinOsc.ar(freq) + (Saw.ar(freq) * saw);
+SynthDef(\ping, { |out, freq=440, sustain=1, amp=0.1, gate=1|
+	var snd = Splay.ar(SinOsc.ar(freq * [1,2,3,4], mul:0.25));
 	snd = snd * EnvGen.ar(Env.adsr(0.01, 0.1, sustain, 0.1), gate, doneAction:2);
-	OffsetOut.ar(out, snd!2 * amp)
+	OffsetOut.ar(out, snd * amp)
 }).add;
 );
 

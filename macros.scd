@@ -11,7 +11,7 @@ MacroExpander.put("synth-perc", "SynthDef(\\#0#, { |out, amp=0.1, freq=440, sust
 
 // FILTERS
 MacroExpander.put("ring", "~#0#[#1#] = \\filter -> { |in| in ring1: SinOsc.ar(44) }");
-MacroExpander.put("filter", "~#0#[#1#] = \\filter -> { |in| RLPF.ar(in, \\freq.kr(220), 0.1) }");
+MacroExpander.put("filter", "~#0#[#1#] = \\filter -> { |in| RLPF.ar(in, \\ffreq.kr(220), 0.1) }");
 MacroExpander.put("delay", "~#0#[#1#] = \\filter -> { |in| DelayC.ar(in, 5, [0, 1]) }");
 MacroExpander.put("reverb", "~#0#[#1#] = \\filter -> { |in| in + FreeVerb2.ar(in[0], in[1], 0.75, 0.75, 0.99) }");
 MacroExpander.put("comb", "~#0#[#1#] = \\filter -> { |in| CombC.ar(in, 5, 0.33, 2) }");
@@ -30,7 +30,7 @@ MacroExpander.put("tempo", "TempoClock.default.tempo = #0#; ~tempo = #0#;");
 MacroExpander.put("tools", "~#0#.fadeTime = 0;\n~#0#.play;\n~#0#.stop;\n~#0#.set(\\amp, 0.1);");
 MacroExpander.put("spec", "Spec.add(\\#0#, [min, max, \lin, step].asSpec)");
 MacroExpander.put("livesampler", "\"~/dev/__git/scprivatepool/livecode/benoit/samplergui.scd\".spath.load");
-MacroExpander.put("loadsamples", "a = ();\n\"~/dev/__git/scwork/samples/*\".pathMatch.do { |samplepath|\n\tvar key = samplepath.basename.split($.)[0].asSymbol;\n\ta[key] = Buffer.read(s, samplepath)\n}");
+MacroExpander.put("loadsamples", "a = ();\n\"~/dev/__git/scwork/samples/*\".pathMatch.do { |samplepath|\n\tvar key = samplepath.basename.split($.).first;\n\tkey = key.split($_).last.asSymbol;\n\ta[key] ? a[key] = Buffer.read(s, samplepath)\n}");
 MacroExpander.put("commands", "MacroExpander.instance.dict.keys.dopostln");
 MacroExpander.put("timer", "(0..16).do{|i| { postf(\"\\n***********\\nMinute: %\\n***********\\n\", i) }.defer(i*60) };\"\";");
 
