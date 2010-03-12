@@ -13,13 +13,13 @@ var announceOSC = SCMenuItem(menuTools, "Announce OSC");
 
 var sep2 = SCMenuSeparator(menuTools, 7); // add a separator
 
-var docAutocomplete = SCMenuItem(menuTools, "Turn On Autocomplete");
+var docMaximise = SCMenuItem(menuTools, "Maximise current Document");
 var countLines = SCMenuItem(menuTools, "Count lines");
 var countChars = SCMenuItem(menuTools, "Count characters");
 
 var sep3 = SCMenuSeparator(menuTools, 11); // add a separator
 
-var loadMySynths = SCMenuItem(menuTools, "Load My Synths");
+var openSynths = SCMenuItem(menuTools, "Open My Synths");
 
 var sep4 = SCMenuSeparator(menuTools, 13); // add a separator
 
@@ -72,12 +72,16 @@ announceOSC.action_({
 	"";
 });
 /////////////////////////////////////////////
-docAutocomplete.action = { Document.current.autoComplete; };
+docMaximise.setShortCut("m", true, true); // CMD+ALT+CTR+m
+docMaximise.action = { Document.current.bounds_(Rect(0,40,Window.screenBounds.width-400,Window.screenBounds.height-40)) };
 countLines.action_({ (Document.current.string.occurrencesOf($\n) + 1).postln; });
 countChars.action_({ Document.current.string.size.postln });
-loadMySynths.action_({ (Platform.userAppSupportDir +/+ "synths.scd").load; });
+openSynths.setShortCut("s", true, true);
+openSynths.action_({ Document.open(Platform.userAppSupportDir +/+ "synths.scd") });
 /////////////////////////////////////////////
 
+// LIVE CODING
+proxySpace.setShortCut("p", true, false); // CMD+SHIFT+r
 proxySpace.action = {
 	p = ProxySpace.push(s.boot);
 	"ProxySpace pushed on default server".postln;
@@ -87,16 +91,18 @@ proxySpace.action = {
 		~snd.ar(2);	"~snd.ar is initialized (.ar) 2 channels".postln;
 	};
 };
-proxySpace.setShortCut("p", true, false); // CMD+SHIFT+r
 
+startHistory.setShortCut("h", true, true);
 startHistory.action_({
 	History.clear.end;
 	History.start;
 });
+stopHistory.setShortCut("H", true, true);
 stopHistory.action_({
 	History.end;
 	History.document;	// you have to manually choose your destination !
 });
+
 gitCommit.action_({
 	var myGitDir = "~/dev/__git/scprivatepool/";
 	var win = Window("commit msg",
@@ -141,7 +147,7 @@ svnCommit.action_({
 	btn.action_({
 		runInTerminal(
 			"cd " ++ mySvnDir ++ " && " ++
-			"svn add **" ++ " && " ++
+			"svn add **/*" ++ " && " ++
 			"svn ci -m '" ++ txt.string ++ "'"
 		);
 		win.close;
