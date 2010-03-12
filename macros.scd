@@ -29,7 +29,8 @@ MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency
 MacroExpander.put("tempo", "TempoClock.default.tempo = #0#; ~tempo = #0#;");
 MacroExpander.put("tools", "~#0#.fadeTime = 0;\n~#0#.play;\n~#0#.stop;\n~#0#.set(\\amp, 0.1);");
 MacroExpander.put("spec", "Spec.add(\\#0#, [min, max, \lin, step].asSpec)");
-MacroExpander.put("sampler", "\"~/dev/__git/scprivatepool/livecode/benoit/samplergui.scd\".spath.load");
+MacroExpander.put("livesampler", "\"~/dev/__git/scprivatepool/livecode/benoit/samplergui.scd\".spath.load");
+MacroExpander.put("loadsamples", "a = ();\n\"~/dev/__git/scwork/samples/*\".pathMatch.do { |samplepath|\n\tvar key = samplepath.basename.split($.)[0].asSymbol;\n\ta[key] = Buffer.read(s, samplepath)\n}");
 MacroExpander.put("commands", "MacroExpander.instance.dict.keys.dopostln");
 MacroExpander.put("timer", "(0..16).do{|i| { postf(\"\\n***********\\nMinute: %\\n***********\\n\", i) }.defer(i*60) };\"\";");
 
