@@ -25,7 +25,7 @@ MacroExpander.put("pf", "(\nNPdef(~#0#, \n\tPbind(\n\t\t\\freq, Pseq([220], inf)
 MacroExpander.put("ptf", "(\nNPdef(~#0#,\n\tPbind(\n\t\t\\freq, Pseq([220], inf), \n\t\t\\t_trig, 1, \n\t\t\\amp, Pseq([0.1], inf), \n\t\t\\dur, Pseq([1], inf)\n\t)\n).play\n)");
 
 // UTILITIES
-MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = nil;");
+MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = nil;\np.makeTempoClock;\n");
 MacroExpander.put("tempo", "TempoClock.default.tempo = #0#; ~tempo = #0#;");
 MacroExpander.put("tools", "~#0#.fadeTime = 0;\n~#0#.play;\n~#0#.stop;\n~#0#.set(\\amp, 0.1);");
 MacroExpander.put("spec", "Spec.add(\\#0#, [min, max, \lin, step].asSpec)");

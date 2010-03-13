@@ -4,9 +4,9 @@
 //_______TESTER
 (
 SynthDef(\test, { |out, freq=440, sustain=1, amp=0.1, gate=1|
-	var snd = SinOsc.ar(freq);
-	snd = snd * EnvGen.ar(Env.adsr(0.01, 0.1, sustain, 0.1), gate, amp, doneAction:2);
-	OffsetOut.ar(out, snd!2)
+	var snd = Splay.ar(SinOsc.ar(freq * [1,1.5], mul:0.5));
+	snd = snd * EnvGen.ar(Env.adsr(0.001, 0.05, 0.33, 0.2), gate, amp, doneAction:2);
+	OffsetOut.ar(out, snd)
 }).add;
 );
 //_______GRAINER
