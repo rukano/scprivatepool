@@ -83,9 +83,9 @@ SynthDef(\beep, { |ton =1, out, pan, amp=0.5|
 ///////////////////////////////////////////////
 
 (
-SynthDef(\ping, { |out, freq=440, sustain=1, amp=0.1, gate=1|
+SynthDef(\ping, { |out, freq=440, amp=0.1, gate=1|
 	var snd = Splay.ar(SinOsc.ar(freq * [1,2,3,4], mul:0.25));
-	snd = snd * EnvGen.ar(Env.adsr(0.01, 0.1, sustain, 0.1), gate, doneAction:2);
+	snd = snd * EnvGen.ar(Env.adsr(0.001, 0.1, 0.1, 0.1), gate, doneAction:2);
 	OffsetOut.ar(out, snd * amp)
 }).add;
 );
