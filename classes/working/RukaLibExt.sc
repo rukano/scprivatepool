@@ -156,14 +156,14 @@
 			\rollClip, \filter -> { |in, clip=0.99, pole=0.2|
 				OnePole.ar(in.clip2(clip), pole ** 0.7);
 			},
-			\krush, \filter -> { |in, bits=16, downsamp=2| 
+			\bitcrush, \filter -> { |in, bits=16, downsamp=2| 
 				var down;
 				in = in.round(0.5 ** bits);
 				down = Latch.ar(in, Impulse.ar(SampleRate.ir / downsamp.max(2))); 
 					// below 1/2 downsamp, do xfade:
 				blend(in, down, (downsamp - 1).clip(0, 1));
 			},
-			\ampFin, \filter -> { |in, limDrive=1, ampLimit=0.8, postAmp=1 | 
+			\limiter, \filter -> { |in, limDrive=1, ampLimit=0.8, postAmp=1 | 
 				Limiter.ar(in * limDrive, ampLimit) * postAmp;
 			}
 		);
@@ -182,7 +182,7 @@
 		MasterFX.new(
 			server: Server.default, 
 			numChannels: 2,
-			slotNames: [\leakDC, \krush, \rollClip, \ampFin], 
+			slotNames: [\leakDC, \bitcrush, \rollClip, \limiter], 
 			busIndex: 0
 		).gui(nSliders: 12);
 	}	
