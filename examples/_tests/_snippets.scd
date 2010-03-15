@@ -1,12 +1,22 @@
 // SYNTHESIS
-
 (
-{
+{	// needs increased memory allocation
+	// nice ambienty swarm sound
 	var snd = Decay2.ar(Dust.ar(4)!2, 0.01, 0.1, mul:WhiteNoise.ar);
 	snd = RLPF.ar(snd, XLine.kr(12000,40, 25), 0.05) * 2;
 	80.do { snd = AllpassN.ar(snd, 0.5, {0.5.rand}!2, rrand(0.5, 12.0)) };
 	snd * EnvGen.kr(Env.perc(0.01, 50, 1, 10), doneAction:2);
 }.play
+)
+
+// EVENTS
+
+(
+// foar adding proto events! (do not forget)
+var	prot = Event.default.put(\freq, { ~midinote.midicps / ~sampleBaseFreq });
+p = Pbind(
+	...
+).play(protoEvent: prot);
 )
 
 // network boradcasting
