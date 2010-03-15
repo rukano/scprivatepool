@@ -1,10 +1,21 @@
+// SYNTHESIS
+
+(
+{
+	var snd = Decay2.ar(Dust.ar(4)!2, 0.01, 0.1, mul:WhiteNoise.ar);
+	snd = RLPF.ar(snd, XLine.kr(12000,40, 25), 0.05) * 2;
+	80.do { snd = AllpassN.ar(snd, 0.5, {0.5.rand}!2, rrand(0.5, 12.0)) };
+	snd * EnvGen.kr(Env.perc(0.01, 50, 1, 10), doneAction:2);
+}.play
+)
+
 // network boradcasting
 
 unixCmd("ifconfig | grep broadcast | awk '{print $NF}'")
 NetAddr.broadcastFlag = true;
 NetAddr.langPort
 
-// array methofs
+// array methods
 .reject
 .removeAllSuchThat{ |x| x.even }
 .diferentiate
