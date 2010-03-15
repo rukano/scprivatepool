@@ -9,7 +9,7 @@
 }.play
 )
 
-// EVENTS
+// EVENTS & PATTERNS
 
 (
 // foar adding proto events! (do not forget)
@@ -18,6 +18,9 @@ p = Pbind(
 	...
 ).play(protoEvent: prot);
 )
+
+// shuffle my pattern! (and concatenate patterns)
+Pbind(\dur, Prorate([2/3,1/3], Pn(0.5,inf)), \degree, Pseq([0],4) ++ Pwhite(0,7,24).select{ |x| x.even } ++ Pseq([7], 4)).play
 
 // network boradcasting
 
