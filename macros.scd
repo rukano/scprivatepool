@@ -26,9 +26,12 @@ MacroExpander.put("limiter", "~#0#[#1#] = \\filter -> { |in, limDrive=1, ampLimi
 
 // PATTERNS
 MacroExpander.put("np", "(\n~#0#[0]= Pbind(\n\t\\instrument, \\#0#,\n\t\\scale, Scale.minor,\n\t\\octave, 4,\n\t\\degree, Pseq([0], inf),\n\t\\amp, Pseq([0.1], inf), \n\t\\dur, Pseq([1], inf)\n)\n)");
+MacroExpander.put("set", "(\n~#0#[1]= \\set -> Pbind(\n\t\\scale, Scale.minor,\n\t\\octave, 4,\n\t\\degree, Pseq([0], inf),\n\t\\amp, Pseq([0.1], inf), \n\t\\dur, Pseq([1], inf)\n)\n)");
+
 MacroExpander.put("pt", "(\nNPdef(~#0#, \n\tPbind(\n\t\t\\t_trig, 1, \n\t\t\\amp, Pseq([0.1], inf), \n\t\t\\dur, Pseq([1], inf)\n\t)\n).play\n)");
 MacroExpander.put("pf", "(\nNPdef(~#0#, \n\tPbind(\n\t\t\\freq, Pseq([220], inf), \n\t\t\\amp, Pseq([0.1], inf), \n\t\t\\dur, Pseq([1], inf)\n\t)\n).play\n)");
 MacroExpander.put("ptf", "(\nNPdef(~#0#,\n\tPbind(\n\t\t\\freq, Pseq([220], inf), \n\t\t\\t_trig, 1, \n\t\t\\amp, Pseq([0.1], inf), \n\t\t\\dur, Pseq([1], inf)\n\t)\n).play\n)");
+
 
 // UTILITIES
 MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = nil;\np.makeTempoClock;\n");
