@@ -1,56 +1,34 @@
 ///////////////MENU BAR////////////////////////////
-var menuTools =  SCMenuGroup(nil, "Tools", 10);
+var menuTools =  SCMenuGroup(nil, "Tools");
+var menuLC =  SCMenuGroup(menuTools, "LiveCoding");
+var menuDirs =  SCMenuGroup(menuTools, "Open Directories");
+var menuInit =  SCMenuGroup(menuTools, "Init Stuff");
+var menuLayout =  SCMenuGroup(menuTools, "Layout");
+var menuXtras =  SCMenuGroup(menuTools, "Xtras");
 
-var recManager = SCMenuItem(menuTools, "Recording Manager");
-var openRecordings = SCMenuItem(menuTools, "Open Recordings");
-var openExtensions = SCMenuItem(menuTools, "Open Extensions");
+// SCMenuSeparator(menuTools, 21); // add a separator
 
-var sep1 = SCMenuSeparator(menuTools, 3); // add a separator
+SCMenuItem(menuXtras, "Recording Manager")
+	.action_({ RecordingManager.new })
+	.setShortCut("R", false, false); // CMD+SHIFT+r
 
-var initMidi = SCMenuItem(menuTools, "Init MIDI Client");
-var initGamepad = SCMenuItem(menuTools, "Init Gamepad - Logitech");
-var announceOSC = SCMenuItem(menuTools, "Announce OSC");
+SCMenuItem(menuDirs, "Open Recordings")
+.action_({ ("open" + thisProcess.platform.recordingsDir.quote).unixCmd });
 
-var sep2 = SCMenuSeparator(menuTools, 7); // add a separator
+SCMenuItem(menuDirs, "Open Extensions")
+.action_({ ("open" + Platform.userAppSupportDir.quote).unixCmd })
+.setShortCut("e", true, true);
 
-var docMaximise = SCMenuItem(menuTools, "Maximise current Document");
-var countLines = SCMenuItem(menuTools, "Count lines");
-var countChars = SCMenuItem(menuTools, "Count characters");
+SCMenuItem(menuDirs, "Open My Synths")
+.action_({ Document.open(Platform.userAppSupportDir +/+ "synths.scd") })
+.setShortCut("s", true, true);
 
-var sep3 = SCMenuSeparator(menuTools, 11); // add a separator
 
-var openSynths = SCMenuItem(menuTools, "Open My Synths");
+SCMenuItem(menuInit, "Init MIDI Client")
+.action_({ MIDIClient.init });
 
-var sep4 = SCMenuSeparator(menuTools, 13); // add a separator
-
-var proxySpace = SCMenuItem(menuTools, "ProxySpace push");
-var startHistory = SCMenuItem(menuTools, "Start History");
-var stopHistory = SCMenuItem(menuTools, "Stop History");
-
-var sep5 = SCMenuSeparator(menuTools, 17); // add a separator
-
-var gitCommit = SCMenuItem(menuTools, "GIT Commit");
-var svnCommit = SCMenuItem(menuTools, "SVN Commit");
-
-var sep6 = SCMenuSeparator(menuTools, 20); // add a separator
-
-var eduWindow = SCMenuItem(menuTools, "Layout > EDU");
-var normalWindow = SCMenuItem(menuTools, "Layout > DEV");
-
-var sep7 = SCMenuSeparator(menuTools, 23); // add a separator
-
-var rebootServer = SCMenuItem(menuTools, "REBOOT!");
-
-//////////////ACTIONS//////////////////////////
-
-recManager.action = { RecordingManager.new };
-recManager.setShortCut("R", false, false); // CMD+SHIFT+r
-openRecordings.action = { ("open" + thisProcess.platform.recordingsDir.quote).unixCmd };
-openExtensions.action = { ("open" + Platform.userAppSupportDir.quote).unixCmd };
-openExtensions.setShortCut("e", true, true);
-//////////////////////////////////////////////
-initMidi.action = { MIDIClient.init };
-initGamepad.action = {
+SCMenuItem(menuInit, "Init Gamepad - Logitech")
+.action_({
 	var deviceID, spec = "Logitech";
 	GeneralHID.buildDeviceList;
 	deviceID = GeneralHID.findBy( 1133 );
@@ -63,26 +41,36 @@ initGamepad.action = {
 	g.spec.map.keys.asList.sort.do{ |key|
 		postf("g['%']\n", key);
 	};
-};
-announceOSC.action_({
+});
+
+SCMenuItem(menuInit, "Announce OSC")
+.action_({
 	"open -a AnnounceOSC.app".unixCmd;
 	"If you don't have AnnounceOSC.app you have to download it from:".postln;
 	"http://cloud.github.com/downloads/cappelnord/AnnounceOSC/AnnounceOSCMacApp.zip".postln;
 	"and put it in your applications folder".postln;
 	"";
 });
-/////////////////////////////////////////////
-docMaximise.setShortCut("m", true, true); // CMD+ALT+CTR+m
-docMaximise.action = { Document.current.bounds_(Rect(0,40,Window.screenBounds.width-400,Window.screenBounds.height-40)) };
-countLines.action_({ (Document.current.string.occurrencesOf($\n) + 1).postln; });
-countChars.action_({ Document.current.string.size.postln });
-openSynths.setShortCut("s", true, true);
-openSynths.action_({ Document.open(Platform.userAppSupportDir +/+ "synths.scd") });
-/////////////////////////////////////////////
 
-// LIVE CODING
-proxySpace.setShortCut("p", true, false); // CMD+SHIFT+r
-proxySpace.action = {
+
+SCMenuItem(menuXtras, "Maximise current Document")
+.action_({ Document.current.bounds_(Rect(0,40,Window.screenBounds.width-400,Window.screenBounds.height-40)) })
+.setShortCut("m", true, true); // CMD+ALT+CTR+m
+
+SCMenuItem(menuXtras, "Count lines")
+.action_({ (Document.current.string.occurrencesOf($\n) + 1).postln; });
+
+SCMenuItem(menuXtras, "Count characters")
+.action_({ Document.current.string.size.postln });
+
+
+SCMenuItem(menuTools, "REBOOT!")
+.action_({ Server.default.reboot })
+.setShortCut("k", true, true); // CMD+SHIFT+r
+
+
+SCMenuItem(menuLC, "ProxySpace push")
+.action_({
 	p = ProxySpace.push(s.boot);
 	"ProxySpace pushed on default server".postln;
 	fork{
@@ -90,72 +78,25 @@ proxySpace.action = {
 		~out.play;	"~out.ar is playing".postln;
 		~snd.ar(2);	"~snd.ar is initialized (.ar) 2 channels".postln;
 	};
-};
+})
+.setShortCut("p", true, false); // CMD+SHIFT+r
 
-startHistory.setShortCut("h", true, true);
-startHistory.action_({
+SCMenuItem(menuLC, "Start History")
+.action_({
 	History.clear.end;
 	History.start;
-});
-stopHistory.setShortCut("H", true, true);
-stopHistory.action_({
+})
+.setShortCut("h", true, true);
+
+SCMenuItem(menuLC, "Stop History")
+.action_({
 	History.end;
-	History.document;	// you have to manually choose your destination !
-});
+	History.document;
+})
+.setShortCut("H", true, true);
 
-gitCommit.action_({
-	var myGitDir = "~/dev/__git/scprivatepool/";
-	var win = Window("commit msg",
-		Rect(
-			(Window.screenBounds.width/2)-200,
-			(Window.screenBounds.height/2)-35,
-			400,
-			70
-		)
-	).front;
-	var txt = TextField(win, Rect(10, 10, 380, 20));
-	var btn = Button(win, Rect(150, 40, 100, 20));
-
-	txt.string_("updated my sc repository with new code");
-	btn.states_([["commit"]]);
-	btn.action_({
-		runInTerminal(
-			"cd " ++ myGitDir ++ " && " ++
-			"git add ." ++ " && " ++
-			"git commit -am '" ++ txt.string ++ "' && " ++
-			"git push"
-		);
-		win.close;
-	});
-});
-
-svnCommit.action_({
-	var mySvnDir = "~/dev/__svn/sctutorium/";
-	var win = Window("commit msg",
-		Rect(
-			(Window.screenBounds.width/2)-200,
-			(Window.screenBounds.height/2)-35,
-			400,
-			70
-		)
-	).front;
-	var txt = TextField(win, Rect(10, 10, 380, 20));
-	var btn = Button(win, Rect(150, 40, 100, 20));
-
-	txt.string_("repository aktualisiert");
-	btn.states_([["commit"]]);
-	btn.action_({
-		runInTerminal(
-			"cd " ++ mySvnDir ++ " && " ++
-			"svn add **/*" ++ " && " ++
-			"svn ci -m '" ++ txt.string ++ "'"
-		);
-		win.close;
-	});
-});
-//////////////////////////////////////////////////
-
-eduWindow.action_({
+SCMenuItem(menuLayout, "Layout > EDU")
+.action_({
 	Document.listener
 		.title_("post")
 		.bounds_((0@20)@(Window.screenBounds.width@250))
@@ -166,7 +107,8 @@ eduWindow.action_({
 	Document.postColor_(Color.white);
 });
 
-normalWindow.action_({
+SCMenuItem(menuLayout, "Layout > DEV")
+.action_({
 	Document.listener
 		.title_("console")
 		.bounds_(
@@ -180,35 +122,33 @@ normalWindow.action_({
 	Document.postColor_(Color.green);
 });
 
-/////////////////////////////////////////////////
 
-rebootServer.setShortCut("k", true, true); // CMD+SHIFT+r
-rebootServer.action_({
-	Server.default.reboot;
-});
+SCMenuItem(menuTools, "Interpret All")
+.action_({
+	var selectionStart = Document.current.selectionStart;
+	var selectionSize  = Document.current.selectionSize;
+	Document.current.balanceParens(inf).selectedString.interpret;
+	Document.current.selectRange(selectionStart, selectionSize);
+})
+.setShortCut("x", true, true);
+
+SCMenuItem(menuTools, "Balance All")
+.action_({
+	Document.current.balanceParens(inf);
+})
+.setShortCut("x", false, true);
 
 ////////////////SERVERS///////////////////////////
 s = Server.default;
 Server.default = Server.local;
 s.options.memSize_(2**15);
 
-// Server.local.options.device = "aggro";
-// Server.internal.options.device = "aggro";
  Server.local.options.device = "MOTU UltraLite";
  Server.internal.options.device = "MOTU UltraLite";
 // Server.default.options.numOutputBusChannels=16;
 // ServerOptions.new.numOutputBusChannels=20;
 //s.recSampleFormat_("int16");
 
-// close the shit
-//Server.internal.window.close;
-//Server.local.window.close;
-
-// make little ones
-//Server.internal.gui(Rect(0,0,270,30));
-//Server.local.gui(Rect(270,0,270,30));
-
-// boot
 s.boot;
 
 ////////////////DEFAULT_ACTIONS///////////////////
@@ -240,19 +180,12 @@ Document.themes.put
 
 Document.setTheme(\rukano);
 QuarkSVNRepository.svnpath_("/usr/bin/svn");
-AutoBackup.start;
+// AutoBackup.start;
 
-// load macros for ZKM!!!
+// load macros!!!
 2.do{"*****************************".postln};
 "Macro Expander Commands:".postln;
-"~/dev/__git/scprivatepool/macros.scd".spath.load;
+"~/dev/__git/scprivatepool/macros.scd".standardizePath.load;
 2.do{"*****************************".postln};
 
-
-//ToolsMenu.add(
-//	[ 
-//	Platform.userAppSupportDir +/+ "startup.rtf",
-//	Platform.userAppSupportDir.quote
-//	];
-//); 
 

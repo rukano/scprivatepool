@@ -146,45 +146,45 @@
 }
 
 // MasterFX
-
-+ MasterFX {
-	*activate {
-		ProxyChain.add(
-			\leakDC,  \filter -> { |in, leak=0.99|
-					LeakDC.ar(in, leak)
-			},
-			\rollClip, \filter -> { |in, clip=0.99, pole=0.2|
-				OnePole.ar(in.clip2(clip), pole ** 0.7);
-			},
-			\bitcrush, \filter -> { |in, bits=16, downsamp=2| 
-				var down;
-				in = in.round(0.5 ** bits);
-				down = Latch.ar(in, Impulse.ar(SampleRate.ir / downsamp.max(2))); 
-					// below 1/2 downsamp, do xfade:
-				blend(in, down, (downsamp - 1).clip(0, 1));
-			},
-			\limiter, \filter -> { |in, limDrive=1, ampLimit=0.8, postAmp=1 | 
-				Limiter.ar(in * limDrive, ampLimit) * postAmp;
-			}
-		);
-			// and specs for them fof gui control.
-		Spec.add(\leak, [0.5, 0.999, \exp]);
-		Spec.add(\clip, [0.0, 1, \amp]);
-		Spec.add(\pole, [0, 0.95, \lin]);
-		
-		Spec.add(\bits, [16, 1]);
-		Spec.add(\downsamp, [1, 100, \exp]);
-		
-		Spec.add(\limDrive, \ampx4);
-		Spec.add(\ampLimit, \amp);
-		Spec.add(\postAmp, \ampx4);
-		
-		MasterFX.new(
-			server: Server.default, 
-			numChannels: 2,
-			slotNames: [\leakDC, \bitcrush, \rollClip, \limiter], 
-			busIndex: 0
-		).gui(nSliders: 12);
-	}	
-}
+//
+//+ MasterFX {
+//	*activate {
+//		ProxyChain.add(
+//			\leakDC,  \filter -> { |in, leak=0.99|
+//					LeakDC.ar(in, leak)
+//			},
+//			\rollClip, \filter -> { |in, clip=0.99, pole=0.2|
+//				OnePole.ar(in.clip2(clip), pole ** 0.7);
+//			},
+//			\bitcrush, \filter -> { |in, bits=16, downsamp=2| 
+//				var down;
+//				in = in.round(0.5 ** bits);
+//				down = Latch.ar(in, Impulse.ar(SampleRate.ir / downsamp.max(2))); 
+//					// below 1/2 downsamp, do xfade:
+//				blend(in, down, (downsamp - 1).clip(0, 1));
+//			},
+//			\limiter, \filter -> { |in, limDrive=1, ampLimit=0.8, postAmp=1 | 
+//				Limiter.ar(in * limDrive, ampLimit) * postAmp;
+//			}
+//		);
+//			// and specs for them fof gui control.
+//		Spec.add(\leak, [0.5, 0.999, \exp]);
+//		Spec.add(\clip, [0.0, 1, \amp]);
+//		Spec.add(\pole, [0, 0.95, \lin]);
+//		
+//		Spec.add(\bits, [16, 1]);
+//		Spec.add(\downsamp, [1, 100, \exp]);
+//		
+//		Spec.add(\limDrive, \ampx4);
+//		Spec.add(\ampLimit, \amp);
+//		Spec.add(\postAmp, \ampx4);
+//		
+//		MasterFX.new(
+//			server: Server.default, 
+//			numChannels: 2,
+//			slotNames: [\leakDC, \bitcrush, \rollClip, \limiter], 
+//			busIndex: 0
+//		).gui(nSliders: 12);
+//	}	
+//}
 
