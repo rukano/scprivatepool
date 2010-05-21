@@ -54,7 +54,7 @@ SCMenuItem(menuInit, "Announce OSC")
 
 
 SCMenuItem(menuXtras, "Maximise current Document")
-.action_({ Document.current.bounds_(Rect(0,40,Window.screenBounds.width-400,Window.screenBounds.height-40)) })
+.action_({ Document.current.bounds_(Rect(0,62,Window.screenBounds.width-400,Window.screenBounds.height-62)) })
 .setShortCut("m", true, true); // CMD+ALT+CTR+m
 
 SCMenuItem(menuXtras, "Count lines")
@@ -140,11 +140,13 @@ SCMenuItem(menuTools, "Balance All")
 
 ////////////////SERVERS///////////////////////////
 s = Server.default;
-Server.default = Server.local;
+// Server.default = Server.local;
+Server.default = Server.internal;
 s.options.memSize_(2**15);
 
- Server.local.options.device = "MOTU UltraLite";
- Server.internal.options.device = "MOTU UltraLite";
+Server.local.options.device = "MOTU UltraLite";
+Server.internal.options.device = "MOTU UltraLite";
+
 // Server.default.options.numOutputBusChannels=16;
 // ServerOptions.new.numOutputBusChannels=20;
 //s.recSampleFormat_("int16");
