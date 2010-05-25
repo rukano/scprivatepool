@@ -31,8 +31,8 @@ MacroExpander.put("set", "~#0#[1]= \\set -> Pbind(\n\t\\scale, Scale.minor,\n\t\
 
 
 // UTILITIES
-MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = nil;\np.makeTempoClock;\np.clock = TempoClock.default;\n");
-MacroExpander.put("mandel", "MandelClock.startFollower(\"Juan\");\nm = MandelClock.instance;\nm.chat();\n");
+MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = 0.1;\np.makeTempoClock;\np.clock = TempoClock.default;\n");
+MacroExpander.put("mandel", "MandelClock.startFollower(\"Juan\", action: {m = MandelClock.instance;});\nm.chat();\n");
 MacroExpander.put("tempo", "TempoClock.default.tempo = #0#; ~tempo = #0#;");
 MacroExpander.put("tools", "~#0#.fadeTime = 0;\n~#0#.play;\n~#0#.stop;\n~#0#.set(\\amp, 0.1);");
 MacroExpander.put("spec", "Spec.add(\\#0#, [min, max, \lin, step].asSpec)");
