@@ -95,6 +95,17 @@ SCMenuItem(menuLC, "Stop History")
 })
 .setShortCut("H", true, true);
 
+SCMenuItem(menuLC, "Mandel Shout")
+.action_({
+	MandelClock.instance.notNil.if {
+		MandelClock.instance.shoutWindow;
+	} {
+		"There is no MandeClock Instance".error;
+	};
+})
+.setShortCut("1", false, false);
+
+
 SCMenuItem(menuLayout, "Layout > EDU")
 .action_({
 	Document.listener
