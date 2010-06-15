@@ -14,15 +14,16 @@ MacroExpander.put("synth-sine", "SynthDef(\\#0#, { |out, amp=0.1, freq=440, atta
 // FILTERS
 MacroExpander.put("ring", "~#0#[#1#] = \\filter -> { |in| in ring1: SinOsc.ar(44) }");
 MacroExpander.put("filter", "~#0#[#1#] = \\filter -> { |in| RLPF.ar(in, \\ffreq.kr(220), 0.1) }");
-MacroExpander.put("delay", "~#0#[#1#] = \\filter -> { |in| DelayC.ar(in, 5, [0, 1]) }");
+MacroExpander.put("delay", "~#0#[#1#] = \\filter -> { |in| in + DelayC.ar(in, 5, [0, 1]) }");
 MacroExpander.put("reverb", "~#0#[#1#] = \\filter -> { |in| in + FreeVerb2.ar(in[0], in[1], 0.75, 0.75, 0.99) }");
-MacroExpander.put("comb", "~#0#[#1#] = \\filter -> { |in| CombC.ar(in, 5, 0.33, 2) }");
+MacroExpander.put("comb", "~#0#[#1#] = \\filter -> { |in| in + CombC.ar(in, 5, 0.33, 2) }");
 MacroExpander.put("eq", "~#0#[#1#] = \\filter -> { |in| MidEQ.ar(in, 220, 0.5, 6) }");
 MacroExpander.put("comp", "~#0#[#1#] = \\filter -> { |in| Compander.ar(in, in, 0.1, 1, 1, 0.01, 0.1) }");
 MacroExpander.put("leakDC",  "~#0#[#1#] = \\filter -> { |in, leak=0.99| LeakDC.ar(in, leak) }");
 MacroExpander.put("roll", "~#0#[#1#] = \\filter -> { |in, clip=0.99, pole=0.2| OnePole.ar(in.clip2(clip), pole ** 0.7) }");
 MacroExpander.put("bitcrush", "(\n~#0#[#1#] = \\filter -> { |in, bits=16, downsamp=2|\n\tvar down;\n\tin = in.round(0.5 ** bits);\n\tdown = Latch.ar(in, Impulse.ar(SampleRate.ir / downsamp.max(2)));\n\tblend(in, down, (downsamp - 1).clip(0, 1))\n}\n)");
 MacroExpander.put("limiter", "~#0#[#1#] = \\filter -> { |in, limDrive=1, ampLimit=0.8, postAmp=1 |  Limiter.ar(in * limDrive, ampLimit) * postAmp; }");
+MacroExpander.put("fb", "~#0#[#1#] = \\filter -> { |in| in + FbC({ |fb| in + fb *0.85 }, 4, 1) }");
 
 
 // PATTERNS
@@ -32,7 +33,7 @@ MacroExpander.put("set", "~#0#[1]= \\set -> Pbind(\n\t\\scale, Scale.minor,\n\t\
 
 // UTILITIES
 
-MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = 0.1;\np.makeTempoClock;\np.clock = TempoClock.default;\nProxyMixer(p)\n");
+MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.1;\ns.latency = 0.1;\np.makeTempoClock;\np.clock = TempoClock.default;\nProxyMixer(p, 6)\n");
 MacroExpander.put("mandel", "MandelClock.startFollower(\"Juan\", action: {m = MandelClock.instance;});\nm.chat();\n");
 MacroExpander.put("tempo", "TempoClock.default.tempo = #0#; ~tempo = #0#;");
 MacroExpander.put("tools", "~#0#.fadeTime = 0;\n~#0#.play;\n~#0#.stop;\n~#0#.set(\\amp, 0.1);");

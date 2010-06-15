@@ -172,7 +172,7 @@ Document.listener
 		(Window.screenBounds.width @ Window.screenBounds.height)
 	)
 	.font_(Font("Inconsolata", 14))
-	.background_(Color.new(0,0,0,0.96))
+	.background_(Color.new(0,0,0,0.85))
 	.stringColor_(Color.green)
 	.alwaysOnTop_(false);
 Document.postColor_(Color.green);
@@ -196,9 +196,10 @@ QuarkSVNRepository.svnpath_("/usr/bin/svn");
 // AutoBackup.start;
 
 // load macros!!!
-2.do{"*****************************".postln};
-"Macro Expander Commands:".postln;
+"*****************************".postln;
+"Loading Macro Expander Commands...".postln;
 "~/dev/__git/scprivatepool/macros.scd".standardizePath.load;
-2.do{"*****************************".postln};
+"Macro Expander Commands LOADED!".postln;
+"*****************************".postln;
 
 
