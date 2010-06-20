@@ -1,10 +1,10 @@
 (
-var cols=8, rows=4, min=0, max=4, name="a Pattern"; // make as args
+var cols=8, rows=8, min=0, max=7, name="a Pattern"; // make as args
 var size = 20;
 var width = size * cols;
 var height = size * rows;
 var bounds = Window.screenBounds;
-var window, buttons, matrix, rowLabels, colLabels;
+var window, buttons, matrix, matrixArray, rowLabels, colLabels;
 var step = (max-min)/rows;
 
 // check and make defaults
@@ -25,7 +25,7 @@ rows.do{ |i|
 		.font_(Font("Monaco", 10))
 		.stringColor_(Color.white)
 		.string_(
-			(i.linlin(0, rows, max, min)-1).asString
+			(i.linlin(0, rows-1, max, min)).asString
 		)
 };
 
@@ -45,13 +45,22 @@ cols.do{ |i|
 matrix = CompositeView(window, Rect(40, 0, width, height))
 	.background_(Color.black);
 matrix.addFlowLayout((0@0), (0@0));
-buttons = Array.fill2D(rows, cols, {
+matrixArray = Array.fill(cols, { List.new }); // TODO: look up for defaults
+buttons = Array.fill2D(rows, cols, { |row, col|
+	var degree = row.linlin(0, rows-1, max, min);
 	Button(matrix, (size@size))
 		.canFocus_(false)
 		.states_([
 			["", Color.black, Color.white],
 			["", Color.black, Color.black]
 		])
+		.action_({ |v|
+			v.value.booleanValue.if {
+				matrixArray[col].add(degree)
+			} {
+				matrixArray[col].remove(degree)
+			}
+		})
 });
 
 
@@ -59,14 +68,13 @@ Button(window, Rect(0, window.bounds.height-size, size*2, size))
 	.states_([["send", Color.black, Color.white]])
 	.canFocus_(false)
 	.action_({
-		var array = buttons.collect{ |row|
-			row.collect{ |col|
-				col.value;
+		matrixArray.collect{ |list|
+			(list.size != 0).if {
+				list.asArray
+			} {
+				\rest
 			}
 		};
-		// TODO: get matrix, and put array into columns (events)
-		array.postln;
-		
 	});
 
 
