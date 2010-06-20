@@ -11,9 +11,11 @@ r
 TEST CODE:
 
 // on Pdefs...
-Pdef(\x, PmonoArtic(\default, \degree, Pseq([0,2,3,4], inf), \dur, 0.25)).play;
+Pdef(\x, PmonoArtic(\default, \degree, Pseq([0,2,3,4], inf), \amp, Pseq([1,1,1,1], inf), \dur, 0.25)).play;
 Pdef(\x).changeListForKey(\degree, [[4,5,6,7], [0,3,2,4]].choose.postln);
-Pdef(\x).changeListWithTextField(\degree);
+Pdef(\x).makeTextFieldForKey(\degree);
+Pdef(\x).makeSlidersForKey(\amp, 16, 0, 1, 0);
+
 
 // on Pbinds as Node Proxies...
 p = ProxySpace.push(s);
@@ -24,7 +26,7 @@ p = ProxySpace.push(s);
 	\dur, Pseq([0.25], inf)
 );
 ~bla.changeListForKey(\degree, (0..7));
-~bla.changeListWithTextField(\degree);
+~bla.makeTextFieldForKey(\degree);
 
 
 
@@ -36,7 +38,68 @@ p = ProxySpace.push(s);
 	changeList { |list|
 		this.list = list;
 		^this
-	}	
+	}
+	
+	makeMatrix {
+		"coming soon".error
+	}
+	
+	makeSliders { |key, cols, rows, min, max, round, name|
+		var size = 20;
+		var width = size * cols;
+		var height = size * rows;
+		var bounds = Window.screenBounds;
+		var window, buttons, sliders, rowLabels, colLabels;
+		
+		// check and make defaults (check for Pseq)
+		window = Window(
+			"Sliders for key % @ %".format(key, name),
+			Rect((bounds.width/2) - (width/2), (bounds.height/2) - (width/2), width+(size*2), height+size),
+			false
+		).front;
+		
+		// ROW LABELS
+		rowLabels = CompositeView(window, Rect(0, 0, 40, height))
+			.background_(Color.green(0.5, 0.5));
+		2.do{ |i|
+			StaticText(rowLabels, Rect(0, (height-size)*i, size*2, size))
+				.align_(\center)
+				.font_(Font("Monaco", 9))
+				.stringColor_(Color.white)
+				.string_( ( (i == 0).if{max}{min} ).asString )
+		};
+		
+		// COLUMN LABELS
+		colLabels = CompositeView(window, Rect(size*2, height, width, size))
+			.background_(Color.blue(0.5, 0.5));
+		colLabels.addFlowLayout((0@0), (0@0));
+		cols.do{ |i|
+			StaticText(colLabels, (size@size))
+				.align_(\center)
+				.font_(Font("Monaco", 9))
+				.stringColor_(Color.white)
+				.string_(i.asString)
+		};
+		
+		// SLIDERS
+		
+		sliders = MultiSliderView(window, Rect(40, 0, width, height))
+			.value_(Array.fill(cols, { 0 }))	// TODO: check for current list
+			.canFocus_(false)
+			.valueThumbSize_(0.5)
+			.thumbSize_(size-2)
+			.gap_(2);
+
+		Button(window, Rect(0, window.bounds.height-size, size*2, size))
+			.states_([["send", Color.black, Color.white]])
+			.font_(Font("Monaco", 9))
+			.canFocus_(false)
+			.action_({
+				this.changeList(sliders.value.linlin(0,1,min,max).round(round))
+			});
+		// TODO: make: onClose -> replace code string!
+		^window
+	}
 }
 
 + Pshuf {
@@ -94,10 +157,10 @@ p = ProxySpace.push(s);
 			"Can only change in Pbind, Pmono, and PmonoArtic".error;		}
 	}
 	
-	changeListWithTextField { |key, name("a Pattern")|
+	makeTextFieldForKey { |key, name("a Pattern")|
+		var window, field, default;
 		( this.checkForClass ).if {
-			var window, field, default;
-			( this.checkForClass ).if {
+			( this.checkForPattern ).if {
 				default = this.patternpairs[this.patternpairs.indexOf(key) + 1].list.asString;
 				window = Window.new("\"%\" @ %".format(key, name), Rect((Window.screenBounds.width/2) - 300, (Window.screenBounds.height/2) - 10, 600,20), false).front;
 				window.addFlowLayout((0@0), (0@0));
@@ -111,6 +174,19 @@ p = ProxySpace.push(s);
 				"Can only change in Pbind, Pmono, and PmonoArtic".error;			}
 		}
 	}
+	
+	makeSlidersForKey { |key, cols, rows, min, max, round, name("a Pattern")|
+		var keyIndex, pattern;
+		( this.checkForClass ).if {
+			keyIndex = this.patternpairs.indexOf(key);
+			pattern = this.patternpairs[keyIndex+1];
+			( pattern.class == Pseq ).if {
+				pattern.makeSliders(key, cols, rows, min, max, round, name);
+			} {
+				"A sequencer only makes sense with Pseq".error;
+			}
+		}
+	}
 }
 
 
@@ -119,8 +195,12 @@ p = ProxySpace.push(s);
 		this.source.changeListForKey(key, list)
 	}
 
-	changeListWithTextField { |key|
-		this.source.changeListWithTextField(key, "Pdef:" ++ this.key.asString);
+	makeTextFieldForKey { |key|
+		this.source.makeTextFieldForKey(key, "Pdef:" ++ this.key.asString);
+	}
+	
+	makeSlidersForKey { |key, cols=8, rows=2, min=0, max=1, round=0|
+		this.source.makeSlidersForKey(key, cols, rows, min, max, round, "Pdef:" ++ this.key.asString)
 	}
 }
 
@@ -129,9 +209,15 @@ p = ProxySpace.push(s);
 		this.source.changeListForKey(key, list)
 	}
 
-	changeListWithTextField { |key|
-		this.source.changeListWithTextField(key, "NodeProxy:" ++ this.key.asString);
+	makeTextFieldForKey { |key|
+		this.source.makeTextFieldForKey(key, "NodeProxy:" ++ this.key.asString);
 	}
+
+	makeSlidersForKey { |key, cols=8, rows=2, min=0, max=1, round=0|
+		this.source.makeSlidersForKey(key, cols, rows, min, max, round, "NodeProxy:" ++ this.key.asString)
+	}
+
+
 }
 
 
