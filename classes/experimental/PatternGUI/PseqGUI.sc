@@ -1,6 +1,6 @@
 PseqSliders {
 	
-	*new { |key, cols=8, rows=2, min=0, max=1, round=0, name, pattern|
+	*new { |key, cols=8, rows=2, min=0, max=1, round=0.001, name, pattern|
 		^super.new.init(key, cols, rows, min, max, round, name, pattern)
 	}
 
@@ -61,8 +61,10 @@ PseqSliders {
 
 		docFunc = {
 			convertFunc.value;
-			Document(winName, array.asString)
-				.bounds_(Rect(0, 0, bounds.width/2, 60));
+			Document(
+				winName,
+				array.asString.replace(" ", "")
+			).bounds_(Rect(0, bounds.height-80, bounds.width/4, 80));
 		};
 
 		pattern.isNil.if {
@@ -96,7 +98,7 @@ PseqSliders {
 
 PseqMatrix {
 
-	*new { |key, cols=8, rows=8, min=0, max=7, name="a Pattern", pattern|
+	*new { |key, cols=16, rows=8, min=0, max=7, name="a Pattern", pattern|
 		^super.new.init(key, cols, rows, min, max, name, pattern)
 	}
 
@@ -181,8 +183,10 @@ PseqMatrix {
 		
 		docFunc = {
 			convertFunc.value;
-			Document(winName, eventArray.asString.replace("r", "\\r"))
-				.bounds_(Rect(0, 0, bounds.width/2, 60));
+			Document(
+				winName,
+				eventArray.asString.replace("r", "\\r").replace(" ", "")
+			).bounds_(Rect(0, bounds.height-80, bounds.width/4, 80));
 		};
 		
 		pattern.isNil.if {
