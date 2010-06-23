@@ -2,6 +2,12 @@
 
 Extensions for Pbind, Pdef & NodeProxy with Patterns
 
+TEST:
+
+Pdef(\s, Pbind(\degree, Pseq([0], inf))).play
+Pdef(\s).makeMatrixForKey(\degree)
+Pdef(\s).makeSlidersForKey(\degree)
+
 r
 
 */
@@ -60,15 +66,15 @@ r
 	}
 
 	makeTextFieldForKey { |key|
-		this.source.makeTextFieldForKey(key, "Pdef:" ++ this.key.asString);
+		this.source.makeTextFieldForKey(key, "Pdef(" ++ this.key.asString ++ ")");
 	}
 	
-	makeSlidersForKey { |key, cols=8, rows=2, min=0, max=1, round=0|
-		this.source.makeSlidersForKey(key, cols, rows, min, max, round, "Pdef:" ++ this.key.asString)
+	makeSlidersForKey { |key, cols=16, rows=2, min=0, max=1, round=0.001|
+		this.source.makeSlidersForKey(key, cols, rows, min, max, round, "Pdef(" ++ this.key.asString ++ ")")
 	}
 
-	makeMatrixForKey { |key, cols=8, rows=2, min=0, max=1|
-		this.source.makeMatrixForKey(key, cols, rows, min, max, "Pdef:" ++ this.key.asString)
+	makeMatrixForKey { |key, cols=16, rows=8, min=0, max=7|
+		this.source.makeMatrixForKey(key, cols, rows, min, max, "Pdef(" ++ this.key.asString ++ ")")
 	}
 
 }
@@ -79,14 +85,14 @@ r
 	}
 
 	makeTextFieldForKey { |key|
-		this.source.makeTextFieldForKey(key, "NodeProxy:" ++ this.key.asString);
+		this.source.makeTextFieldForKey(key, "NodeProxy(" ++ this.key.asString ++ ")");
 	}
 
-	makeSlidersForKey { |key, cols=8, rows=2, min=0, max=1, round=0|
-		this.source.makeSlidersForKey(key, cols, rows, min, max, round, "NodeProxy:" ++ this.key.asString)
+	makeSlidersForKey { |key, cols=16, rows=2, min=0, max=1, round=0.001|
+		this.source.makeSlidersForKey(key, cols, rows, min, max, round, "NodeProxy(" ++ this.key.asString ++ ")")
 	}
 	
-	makeMatrixForKey { |key, cols=8, rows=2, min=0, max=1|
-		this.source.makeMatrixForKey(key, cols, rows, min, max, "NodeProxy:" ++ this.key.asString)
+	makeMatrixForKey { |key, cols=16, rows=8, min=0, max=7|
+		this.source.makeMatrixForKey(key, cols, rows, min, max, "NodeProxy(" ++ this.key.asString ++ ")")
 	}
 }

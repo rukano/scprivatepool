@@ -17,6 +17,15 @@ r
 		this.list = list;
 		^this
 	}
+
+	makeMatrix { |key, cols, rows, min, max, name|
+		^PseqMatrix(key, cols, rows, min, max, name, this)
+	}
+	
+	makeSliders { |key, cols, rows, min, max, round, name|
+		^PseqSliders(key, cols, rows, min, max, round, name, this)
+	}
+
 }
 
 + Pshuf {
