@@ -73,11 +73,19 @@ PseqSliders {
 				docFunc.value;
 			};
 		} {
+			// use preexisting values from the pattern
+			(pattern.list.size > cols).if {
+				sliders.value_(pattern.list.keep(cols));
+			} {
+				sliders.value_(pattern.list ++ (0!(cols - pattern.list.size)));
+			};
+			
+			// make button for pattern bound array
 			buttonName = "send";
 			buttonAction = {
 				convertFunc.value;
 				pattern.changeList(array);
-			}
+			};
 		};
 
 		// SEND BUTTON
@@ -109,7 +117,7 @@ PseqMatrix {
 		var bounds = Window.screenBounds;
 		var window, buttons, matrix, matrixArray, rowLabels, colLabels;
 		var step = (max-min)/rows;
-		var convertFunc, docFunc, eventArray;
+		var convertFunc, docFunc, mapDegreeToButton, eventArray, patternArray;
 
 		var winName, buttonName, buttonAction;
 
@@ -155,32 +163,38 @@ PseqMatrix {
 			.background_(Color.black);
 		matrix.addFlowLayout((0@0), (0@0));
 		matrixArray = Array.fill(cols, { List.new }); // TODO: look up for defaults
-		buttons = Array.fill2D(rows, cols, { |row, col|
+		buttons = Array.fill2D(cols, rows, nil);
+		rows.do { |row|
 			var degree = row.linlin(0, rows-1, max, min);
-			Button(matrix, (size@size))
-				.canFocus_(false)
-				.states_([
-					["", Color.black, Color.white],
-					["", Color.black, Color.black]
-				])
-				.action_({ |v|
-					v.value.booleanValue.if
-						{ matrixArray[col].add(degree) }
-						{ matrixArray[col].remove(degree) }
-				})
-		});
-		
+			cols.do { |col|
+				buttons[col][row] = Button(matrix, (size@size))
+					.canFocus_(false)
+					.states_([
+						["", Color.black, Color.white],
+						["", Color.black, Color.black]
+					])
+					.action_({ |v|
+						v.value.booleanValue.if
+							{ matrixArray[col].add(degree) }
+							{ matrixArray[col].remove(degree) }
+					})
+			}
+		};
+
 		convertFunc = {
 			eventArray = matrixArray.collect{ |list|
-					(list.size == 0).if
-						{ \r }
-						{ (list.size == 1).if
-							{ list[0] }
-							{ list.asArray }
+					(list.size == 0).if {
+						\r
+					} {
+						(list.size == 1).if {
+							list[0]
+						} {
+							list.asArray
 						}
+					}
 				};
 		};
-		
+
 		docFunc = {
 			convertFunc.value;
 			Document(
@@ -188,13 +202,48 @@ PseqMatrix {
 				eventArray.asString.replace("r", "\\r").replace(" ", "")
 			).bounds_(Rect(0, bounds.height-80, bounds.width/4, 80));
 		};
+
+		mapDegreeToButton = { |degree, col|
+			var row;
+			( degree.class != Symbol ).if {
+				( (degree <= max) and: (degree >= min) ).if {
+					row = degree.linlin(min, max, rows-1, 0).round;
+					buttons[col][row].valueAction_(1);
+				} {
+					"Value: % is out of min/max range and has been ignored".format(degree).warn;
+				};
+			};
+		};
 		
 		pattern.isNil.if {
+			// make button for non pattern bound gui
 			buttonName = "doc";
 			buttonAction = {
 				docFunc.value;
 			};
 		} {
+			// make default array from pattern list
+			(pattern.list.size > cols).if {
+				patternArray = pattern.list.keep(cols);
+			} {
+				patternArray = pattern.list;
+			};
+
+			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			// set the matrix buttons to existing pattern values
+			patternArray.do { |item, i|
+				// degree to array mapping
+				( item.size != 0 ).if {
+					item.do { |value|
+						// map all of the col
+						mapDegreeToButton.value(value, i)
+					}
+				} {
+					// map to button
+					mapDegreeToButton.value(item, i)
+				}
+			};
+			
+			// make button for pattern bound gui
 			buttonName = "send";
 			buttonAction = {
 				convertFunc.value;
