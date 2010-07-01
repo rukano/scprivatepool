@@ -14,11 +14,16 @@ SpeechRender {
 	
 	*initClass {
 		voices = ();
-		voices.all = [			
+		voices.all = [
+			// 0..4			
 			'Agnes', 'Kathy', 'Princess', 'Vicki', 'Victoria',
+			// 5..9			
 			'Bruce', 'Fred', 'Junior', 'Ralph', 'Alex',
+			// 10..15			
 			'Albert', 'Bad News', 'Bahh', 'Bells', 'Boing', 'Bubbles',
+			// 16..20			
 			'Cellos', 'Deranged', 'Good News', 'Hysterical', 'Pipe Organ',
+			// 21..23			
 			'Trinoids', 'Whisper', 'Zarvox'
 		];
 		voices.male = ['Bruce', 'Fred', 'Junior', 'Ralph', 'Alex'];
@@ -50,8 +55,10 @@ SpeechRender {
 		// start the command
 		cmd = "say";
 
-		// add the voice
-		voice.isNil.if { voice = defaultVoice };
+		// add the voice - sybols and strings pass through
+		(voice.isNil).if { voice = defaultVoice };
+		(voice.class == Integer).if { voice = voices.all[voice] };
+
 		cmd = cmd + "-v" + voice.asString;
 		
 		// add more options
