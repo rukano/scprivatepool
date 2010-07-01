@@ -1,3 +1,10 @@
+/*
+Little class to render terminal voices into a temp folder (or a given path)
+Also can be loaded as buffer. Subclass SpeechBuffer calls the render and loads the buffer automatically
+2010
+r
+*/
+
 SpeechRender {
 	
 	classvar <>voices, <>defaultVoice;
@@ -71,8 +78,8 @@ SpeechRender {
 }
 
 SpeechBuffer : SpeechRender {
-	*new { |string, voice, path, opt|
-		^super.new(string, voice, path, opt).asBuffer
+	*new { |string, voice, path, opt, server|
+		^super.new(string, voice, path, opt).asBuffer(server)
 	}
 }
 
