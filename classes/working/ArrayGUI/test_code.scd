@@ -23,4 +23,4 @@ a = CodeReplacer.new
 a.replace("hello")
 
 ArrayMatrix([1,2,3,\,3,2,9,5,6,4,4,3,5], 16, 8, [0, 7])
-ArraySliders([1,2,3,4,3,2,2,3], 16)
+ArraySliders([[1,4,6],[2,6],3,4,[3,6],2,[2,7],3], 16)

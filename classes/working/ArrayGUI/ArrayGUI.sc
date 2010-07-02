@@ -226,8 +226,8 @@ ArrayMatrix : ArrayGUI {
 	
 	var <matrixArray;
 
-	*new { |array, cols=16, rows=8, spec, pattern, document, replaceCode|
-		spec.isNil.if { spec = ControlSpec(0, 8, \lin, 1) };
+	*new { |array, cols, rows=8, spec, pattern, document, replaceCode|
+		spec.isNil.if { spec = ControlSpec(0, 7, \lin, 1) };
 		^super.new(array, cols, rows, spec, pattern, document, replaceCode).init
 	}
 	
@@ -259,7 +259,7 @@ ArrayMatrix : ArrayGUI {
 		};
 		rowLabels.do { |rowLabel, i|
 				rowLabel.string_(
-					((i/(rows-1)).linlin(0, 1, spec.maxval-1, spec.minval).round(0.1)).asString
+					((i/(rows-1)).linlin(0, 1, spec.maxval, spec.minval).round(0.1)).asString
 //					spec.map(abs(1-(i/(rows-1)))).asString
 				)
 		};
