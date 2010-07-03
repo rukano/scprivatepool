@@ -24,6 +24,7 @@ CodeReplacer {
 	}
 	
 	init { |withMark|
+		// if with mark, it places the mark automatically
 		document = Document.current;
 		codePos = document.selectionStart;
 		codeSize = document.selectionSize;
@@ -42,7 +43,9 @@ CodeReplacer {
 	}
 	
 	replace { |code, promptWhenDiff=true|
-		this.checkDiff.if {
+		// normale replacing, with checkdiff option
+		// if not, it wont replace if the document has changed
+		this.docHasChanged.if {
 			^this.pr_replace(codePos, codeSize, code)
 		} {
 			promptWhenDiff.if {
@@ -55,6 +58,7 @@ CodeReplacer {
 	}
 	
 	pr_replace { |pos, size, code|
+		// private, just for easiermoding the other methods
 		document.string =
 			document.string.keep(pos) ++
 			code ++
@@ -64,6 +68,8 @@ CodeReplacer {
 	}
 	
 	interpretReplace {
+		// usually should happen instantly
+		// so nor marking or diff checking needed...
 		var newCode = oldCode.interpret;
 		case
 		{ newCode.class == String }	{
@@ -87,34 +93,49 @@ CodeReplacer {
 	
 	
 	placeMark {
+		// place a mark with a unique id
 		mark = "/*** @@@ " ++ Date.localtime.stamp ++ " @@@ ***/";
 		^this.pr_replace(codePos, codeSize, mark);
 	}
 	
 	replaceMark { |code|
+		// replace without checking anithing
+		// just lookup for the mark and replace
 		var markPos = document.string.find(mark);
 		var markSize = mark.size;
 		^this.pr_replace(markPos, markSize, code);
 	}
 	
 	forceReplace { |code|
+		// in case you want to replace in the same place the original code was
+		// usually search and replace could be safer
 		^this.pr_replace(codePos, codeSize, code)
 	}
 	
 	searchAndReplace { |code|
+		// search for the original code string
+		// and replaces it with the new code
+		// could be annoying if you have similar
+		// array or code in your document
 		var newPos = document.string.find(oldCode);
 		^this.pr_replace(newPos, oldCode.size, code);
 	}
 	
 	documentWithCode { |code|
-		Document("code", code).front.bounds_(Rect(0, Window.screenBounds.height-200, 300, 200));
+		// easy mode, makes a document with the new code
+		// so you can copy paste it wherever you want
+		Document("code", code)
+			.front
+			.bounds_(Rect(0, Window.screenBounds.height-200, 300, 200))
+			.selectRange(0, code.size);
+		
 		^this
 	}
 	
-	checkDiff {
-		if (document.string(codePos, codeSize)[..10] == oldCode[0..10])
-			{ ^true }
+	docHasChanged {
+		if (document.string(codePos, codeSize)[..5] == oldCode[0..5]) // nasty check!
 			{ ^false }
+			{ ^true }
 	}
 	
 	diffPrompt { |code|
@@ -123,7 +144,7 @@ CodeReplacer {
 		win.addFlowLayout((0@0), (0@0));
 
 		StaticText(win, (win.bounds.width@win.bounds.height))
-			.string_("\t\tWhat do you want to do?\n\n\t\t(f)orce replace\n\t\t(s)earch original code and replace\n\t\t(d)ocument with code")
+			.string_("\t\t(f) orce replace\n\t\t(s) earch and replace\n\t\t(d) ocument with code")
 			.align_(\left)
 			.font_(Font("Monaco", 12));
 
@@ -131,15 +152,15 @@ CodeReplacer {
 			case
 			// YES
 			{ c == $f }{
-				"force".postln;
+				this.forceReplace(code);
 				win.close;
 			}
 			{ c == $s }{
-				"search".postln;
+				this.searchAndReplace(code);
 				win.close;
 			}
 			{ c == $d }{
-				Document("code from gui", code);
+				this.documentWithCode(code);
 				win.close;
 			}
 		});
