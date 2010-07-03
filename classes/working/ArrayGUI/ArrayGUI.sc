@@ -8,15 +8,15 @@ Still has to be cleaned up and it's highly experimental
 TODOs:
 - bind to pattern
 - write pattern extensions
-- activate code replacer on close (for all?)
 - how to get string from subclass in superclass method?
-- initClass with some shortcuts
+- initClass with maybe bookeeping (for step sequencer?)
+- initClass with Pattern arguments specs!
 - prompt or specs and gui stuff
 */
 
 ArrayGUI {
 
-	classvar <all, <currentID; // maybe for book keeping?
+//	classvar <all, <currentID; // maybe for book keeping?
 
 	// GUI stuff
 	var <window, <rowLabelsView, <colLabelsView, <valuesView;
@@ -42,9 +42,15 @@ ArrayGUI {
 		^super.new.initDefaults(array, cols, rows, spec, pattern, document).makeGUI(replaceCode)
 	}
 	
+	*withPrompt {
+		// make a prompt gui for specs and args
+		// then call new
+	}
+	
 	*initClass {
-		all = ();
-		currentID = 0;
+		// TODO: add some specs for pattern keys?
+//		all = ();
+//		currentID = 0;
 	}
 
 	initDefaults { |array, a_cols, a_rows, a_spec, a_pattern, document|
@@ -68,15 +74,15 @@ ArrayGUI {
 		originalArray = array;
 
 		// important defaults
-		a_cols.isNil.if
+		if (a_cols.isNil)
 			{ cols = array.size }
 			{ cols = a_cols };
 
-		a_rows.isNil.if
+		if (a_rows.isNil)
 			{ rows = 2 }
 			{ rows = a_rows };
 		
-		a_spec.isNil.if {
+		if (a_spec.isNil.if) {
 			case
 				{ (array.maxItem > 1) and: (array.minItem > 0) } { maxval = array.maxItem; minval = 0; }
 				{ (array.maxItem < 1) and: (array.minItem < 0) } { minval = array.minItem; maxval = 1; }
@@ -84,26 +90,27 @@ ArrayGUI {
 				{ minval = 0; maxval = 1 };
 			spec = ControlSpec(minval, maxval, \lin, 0.01)
 		} {
-			( (a_spec.class == Symbol) or: (a_spec.class == Array) ).if
+			if ( (a_spec.class == Symbol) or: (a_spec.class == Array) )
 				{ a_spec = a_spec.asSpec };
 			spec = a_spec;
 		};
 		
 		// expand array for the internal
 		// more slider type, but shuld work for other types...
-		( originalArray.size > cols ).if {
+		if ( originalArray.size > cols ) {
 			internalArray = originalArray.keep(cols);
 		} {
 			internalArray = originalArray ++ 0.dup(cols - originalArray.size)
 		};
 
 		// xtras
-		a_pattern.notNil.if {
-			// bind to  pattern (list)
-			pattern = a_pattern;
-			buttonType = \send;
-		} {
+		if (a_pattern.isNil) {
 			buttonType = \doc;
+		} {
+			if ( a_pattern.isKinfOf(ListPattern) )
+				{ pattern = a_pattern }
+				{ "I need a List Pattern to work properly".warn };
+			buttonType = \send;
 		};
 
 		codeReplacer = CodeReplacer.new;		
@@ -138,7 +145,7 @@ ArrayGUI {
 		// button
 		case
 			{ buttonType == \doc }	{ buttonAction = {this.makeDoc(this.endCode)} }
-			{ buttonType == \send }	{ buttonAction = {"TODO: have to bind me to a pattern".warn} };
+			{ buttonType == \send }	{ buttonAction = {pattern.replaceList(this.code)} };
 
 		mainButton = Button(window, Rect(0, height, size*2, size))
 			.states_([[buttonType, Color.black, Color.white]])
