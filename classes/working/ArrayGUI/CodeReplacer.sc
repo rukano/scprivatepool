@@ -4,8 +4,7 @@ By difference with the original document, it prompts for an action
 Written to be used with the ArrayGUI class for updating the code from the GUI but can be used in other contexts
 
 TODO:
-- marking system with ids and searchable string
-- search, force, document
+- test the different methods
 
 Known Issues:
 - app crash when replacing at the beginning of a document! be careful!
@@ -15,17 +14,16 @@ Known Issues:
 */
 
 CodeReplacer {
-	classvar <currentID; // better with time stamp???
 
 	var <document;
 	var <oldCode, <codePos, <codeSize;
 	var <mark;
 
-	*new {
-		^super.new.init
+	*new { |withMark=false|
+		^super.new.init(withMark)
 	}
 	
-	init {
+	init { |withMark|
 		document = Document.current;
 		codePos = document.selectionStart;
 		codeSize = document.selectionSize;
@@ -37,6 +35,9 @@ CodeReplacer {
 		};
 
 		oldCode = document.string(codePos, codeSize);
+		
+		withMark.if { this.placeMark };
+		
 		^this
 	}
 	
@@ -48,7 +49,7 @@ CodeReplacer {
 				^this.diffPrompt(code)
 			} {
 				"Document has changed.\nTry other methods for replacing".warn;
-				^document
+				^this
 			}
 		};
 	}
@@ -59,7 +60,7 @@ CodeReplacer {
 			code ++
 			document.string.drop(pos + size);
 		document.syntaxColorize;
-		^document
+		^this
 	}
 	
 	interpretReplace {
@@ -81,29 +82,33 @@ CodeReplacer {
 		newCode = newCode.asString.replace(" ", ""); // replace spaces? if u want
 		this.replace(newCode, false);
 		document.selectRange(codePos, newCode.size);
+		^this
 	}
 	
 	
-	// BIG TODO !!!
 	placeMark {
-		// delete original code
-		// place mark with ID
+		mark = "/*** @@@ " ++ Date.localtime.stamp ++ " @@@ ***/";
+		^this.pr_replace(codePos, codeSize, mark);
 	}
 	
-	replaceMark {
-		// replace marked stuff
+	replaceMark { |code|
+		var markPos = document.string.find(mark);
+		var markSize = mark.size;
+		^this.pr_replace(markPos, markSize, code);
 	}
 	
-	forceReplace {
-		// replace in place
+	forceReplace { |code|
+		^this.pr_replace(codePos, codeSize, code)
 	}
 	
-	searchAndReplace {
-		// find and replace
+	searchAndReplace { |code|
+		var newPos = document.string.find(oldCode);
+		^this.pr_replace(newPos, oldCode.size, code);
 	}
 	
-	documentWithCode {
-		// make doc with new code
+	documentWithCode { |code|
+		Document("code", code).front.bounds_(Rect(0, Window.screenBounds.height-200, 300, 200));
+		^this
 	}
 	
 	checkDiff {
