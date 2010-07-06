@@ -78,6 +78,7 @@ ArrayGUI {
 		// this should be a normal string, not a document.string
 		// hence, easy bracket check w/o checking te previous brackets
 		if( array.class == String ) {
+			// not workiking for (0..9) and stuff like that...
 			(array[0].isDecDigit and: (array.contains("!").not)).if {
 				// for arrays w/o brackets
 				array = ("[" ++ array ++ "]").interpret;
@@ -88,7 +89,7 @@ ArrayGUI {
 				hasBrackets = true;
 			}
 		};
-
+		
 		originalArray = array;
 
 		// important defaults
@@ -99,8 +100,8 @@ ArrayGUI {
 		if (a_rows.isNil)
 			{ rows = 2 }
 			{ rows = a_rows };
-		
-		if (a_spec.isNil.if) {
+
+		if (a_spec.isNil) {
 			case
 				{ (array.maxItem > 1) and: (array.minItem > 0) } { maxval = array.maxItem; minval = 0; }
 				{ (array.maxItem < 1) and: (array.minItem < 0) } { minval = array.minItem; maxval = 1; }
@@ -125,7 +126,8 @@ ArrayGUI {
 		if (a_pattern.isNil) {
 			buttonType = \doc;
 		} {
-			if ( a_pattern.isKinfOf(ListPattern) )
+			// TODO : check this out and bind pattern!
+			if ( a_pattern.isKindOf(ListPattern) )
 				{ pattern = a_pattern }
 				{ "I need a List Pattern to work properly".warn };
 			buttonType = \send;
@@ -163,7 +165,7 @@ ArrayGUI {
 		// button
 		case
 			{ buttonType == \doc }	{ buttonAction = {this.makeDoc(this.endCode)} }
-			{ buttonType == \send }	{ buttonAction = {pattern.replaceList(this.code)} };
+			{ buttonType == \send }	{ "TODO!".postln /* buttonAction = {pattern.replaceList(this.code)} */ };
 
 		mainButton = Button(window, Rect(0, height, size*2, size))
 			.states_([[buttonType, Color.black, Color.white]])

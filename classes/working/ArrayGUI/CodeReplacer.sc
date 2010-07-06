@@ -86,7 +86,7 @@ CodeReplacer {
 		{ newCode = newCode.asString }; // default
 
 		newCode = newCode.asString.replace(" ", ""); // replace spaces? if u want
-		this.replace(newCode, false);
+		this.forceReplace(newCode, false);	// must be in the same point!
 		document.selectRange(codePos, newCode.size);
 		^this
 	}
@@ -133,7 +133,7 @@ CodeReplacer {
 	}
 	
 	docHasChanged {
-		if (document.string(codePos, codeSize)[..5] == oldCode[0..5]) // nasty check!
+		if (document.string(codePos, 5) == oldCode[..5]) // nasty check!
 			{ ^false }
 			{ ^true }
 	}
