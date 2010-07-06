@@ -41,7 +41,7 @@ SpeechRender {
 		tempPrefix = "temp_speech_";
 		tempDir = thisProcess.platform.recordingsDir +/+ "SpeechRenderings";
 		File.exists(tempDir).not.if {
-			("mkdir -p " + tempDir).systemCmd;
+			("mkdir -p " + tempDir.escapeChar($ )).systemCmd;
 		};
 
 	}
