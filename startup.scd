@@ -202,4 +202,31 @@ QuarkSVNRepository.svnpath_("/usr/bin/svn");
 "Macro Expander Commands LOADED!".postln;
 "*****************************".postln;
 
+// make me Shortcuts!
+// TODO: load a file with all shortcuts and make a menu item for it!
+(
+Document.globalKeyDownAction_({ |v,c,m,u,k|
+	// -------------------- ctrl
+	(m == 262401).if {
+	case
+		{c == $1}{
+			CodeReplacer().interpretReplace;
+		}
+		{c == $2}{
+			ArraySliders(Document.current.selectedString, replaceCode:true);
+		}
+		{c == $3}{
+			ArrayMatrix(Document.current.selectedString, replaceCode:true);
+		};
+	};
+	// -------------------- alt
+	// -------------------- cmd
+	// -------------------- shift
+	// -------------------- cmd + alt
+	// -------------------- cmd + ctrl
+	// -------------------- cmd + shift + alt
+	// -------------------- ctrl + alt
+	// -------------------- ctrl + shift + alt
 
+});
+);

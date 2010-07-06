@@ -12,6 +12,8 @@ TODOs:
 - initClass with maybe bookeeping (for step sequencer?)
 - initClass with Pattern arguments specs!
 - prompt or specs and gui stuff
+- change syntax for ? and ??
+
 */
 
 ArrayGUI {
@@ -42,23 +44,6 @@ ArrayGUI {
 		^super.new.initDefaults(array, cols, rows, spec, pattern, document).makeGUI(replaceCode)
 	}
 	
-	*makeShortcuts {
-		var a;
-		Document.globalKeyDownAction_({ |v,c,m,u,k|
-			(m == 262401).if {
-			case
-				{c == $1}{
-					CodeReplacer().interpretReplace;
-				}
-				{c == $2}{
-					a = ArraySliders(Document.current.selectedString, replaceCode:true);
-				}
-				{c == $3}{
-					a = ArrayMatrix(Document.current.selectedString, replaceCode:true);
-				};
-			}
-		});
-	}
 	
 	*withPrompt {
 		// make a prompt gui for specs and args
@@ -72,27 +57,30 @@ ArrayGUI {
 	}
 
 	initDefaults { |array, a_cols, a_rows, a_spec, a_pattern, document|
-
+		[array, array.class].postln;
 		// make array usable if it is a string
 		// code replacer makes this good, but its document bounded
 		// this should be a normal string, not a document.string
 		// hence, easy bracket check w/o checking te previous brackets
 		if( array.class == String ) {
 			// not workiking for (0..9) and stuff like that...
-			(array[0].isDecDigit and: (array.contains("!").not)).if {
+			// very nasty check... check other ways? try?
+			if (array[0].isDecDigit and:
+				((array.contains("!") xor: array.contains(".."))).not
+			) {
 				// for arrays w/o brackets
 				array = ("[" ++ array ++ "]").interpret;
 				hasBrackets = false;
 			}{
 				// all other kind of arrays and shortcuts will be interpreted
-				array = array.interpret;
 				hasBrackets = true;
-			}
+				array = array.interpret;
+			};
 		};
-		
+		[array, array.class].postln;
 		originalArray = array;
 
-		// important defaults
+		// important defaults		
 		if (a_cols.isNil)
 			{ cols = array.size }
 			{ cols = a_cols };
@@ -103,9 +91,12 @@ ArrayGUI {
 
 		if (a_spec.isNil) {
 			case
-				{ (array.maxItem > 1) and: (array.minItem > 0) } { maxval = array.maxItem; minval = 0; }
-				{ (array.maxItem < 1) and: (array.minItem < 0) } { minval = array.minItem; maxval = 1; }
-				{ (array.maxItem > 1) and: (array.minItem < 0) } { minval = array.minItem; maxval = array.maxItem; }
+				{ (array.maxItem > 1) and: (array.minItem >= 0) }
+					{ maxval = array.maxItem; minval = 0 }
+				{ (array.maxItem <= 1) and: (array.minItem < 0) }
+					{ minval = array.minItem; maxval = 1 }
+				{ (array.maxItem > 1) and: (array.minItem < 0) }
+					{ minval = array.minItem; maxval = array.maxItem }
 				{ minval = 0; maxval = 1 };
 			spec = ControlSpec(minval, maxval, \lin, 0.01)
 		} {
@@ -113,6 +104,8 @@ ArrayGUI {
 				{ a_spec = a_spec.asSpec };
 			spec = a_spec;
 		};
+		
+		spec.postln;
 		
 		// expand array for the internal
 		// more slider type, but shuld work for other types...
@@ -224,7 +217,7 @@ ArrayGUI {
 
 ArraySliders : ArrayGUI {
 	
-	*new { |array, cols, rows, spec, pattern, document, replaceCode|
+	*new { |array, cols, rows, spec, pattern, document, replaceCode=false|
 		^super.new(array, cols, rows, spec, pattern, document, replaceCode).init
 	}
 	
@@ -253,7 +246,7 @@ ArrayMatrix : ArrayGUI {
 	
 	var <matrixArray;
 
-	*new { |array, cols, rows=8, spec, pattern, document, replaceCode|
+	*new { |array, cols, rows=8, spec, pattern, document, replaceCode=false|
 		spec.isNil.if { spec = ControlSpec(0, 7, \lin, 1) };
 		^super.new(array, cols, rows, spec, pattern, document, replaceCode).init
 	}
