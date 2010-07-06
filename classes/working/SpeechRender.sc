@@ -2,6 +2,9 @@
 Little class to render terminal voices into a temp folder (or a given path)
 Also can be loaded as buffer. Subclass SpeechBuffer calls the render and loads the buffer automatically
 
+TODO:
+- render whole strings, not just the first sentence!
+
 WARNING: Files have a 22050Hz sample rate!
 
 2010

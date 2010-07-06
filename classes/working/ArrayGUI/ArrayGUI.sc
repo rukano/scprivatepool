@@ -42,6 +42,24 @@ ArrayGUI {
 		^super.new.initDefaults(array, cols, rows, spec, pattern, document).makeGUI(replaceCode)
 	}
 	
+	*makeShortcuts {
+		var a;
+		Document.globalKeyDownAction_({ |v,c,m,u,k|
+			(m == 262401).if {
+			case
+				{c == $1}{
+					CodeReplacer().interpretReplace;
+				}
+				{c == $2}{
+					a = ArraySliders(Document.current.selectedString, replaceCode:true);
+				}
+				{c == $3}{
+					a = ArrayMatrix(Document.current.selectedString, replaceCode:true);
+				};
+			}
+		});
+	}
+	
 	*withPrompt {
 		// make a prompt gui for specs and args
 		// then call new
