@@ -2,34 +2,37 @@ CodeBookmark {
 	classvar <stamp;
 	
 	*initClass {
-		stamp = "/* !!! bookmark: % !!! */";
+		stamp = "\n/* !!! bookmark: % !!! */\n";
 	}
 	
-	*new { |num|
-		Document.current.string_(
-			Document.current.string.insert(
-				Document.current.selectionStart,
-				stamp.format(num);
-			)
+	*set { |num|
+		var doc = Document.current;
+		var pos = doc.selectionStart + stamp.size;
+		var nStamp = stamp.format(num);
+		if (doc.string.find(nStamp).isNil.not) {
+			^"there's already a bookmark! delete it manually".warn
+		};
+		doc.string_(
+			doc.string.insert(doc.selectionStart, nStamp)
 		);
-		^"--- Bookmarked %".postf(num)
+		doc.selectRange(pos, 0);
+		doc.syntaxColorize;
+		^nStamp
 	}
 	
 	*goto { |num|
-		Document.current.selectRange(
-			Document.current.string.find(stamp.format(num)),
-			nil
-		);
-		^"--- Went to %".postf(num)
+		var doc = Document.current;
+		var nStamp = stamp.format(num);
+		doc.selectRange(doc.string.find(nStamp) + nStamp.size,0);
+		^"\nGOTO: %".postf(nStamp)
 	}
 	
 	*selectBalanced { |num|
-		Document.current.selectRange(
-			Document.current.string.find(stamp.format(num)),
-			nil
-		);
-		Document.current.balanceParens(inf);
-		^"--- Went to % and balanced".postf(num)
+		var doc = Document.current;
+		var nStamp = stamp.format(num);
+		doc.selectRange(doc.string.find(nStamp),0);
+		doc.balanceParens(inf);
+		^"\nSELECT: %".postf(nStamp)
 	}
 	
 }

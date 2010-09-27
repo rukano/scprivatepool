@@ -1,10 +1,10 @@
+/*
 (
 w = Window.new("I catch keystrokes").front;
 w.view.keyDownAction_({ |view, char, modifiers, unicode, keycode|
 	[char, modifiers, unicode, keycode].postln;
 });
 
-/*
 
 Keys: 0..9
 	[ 29, 18, 19, 20, 21, 23, 22, 26, 28, 25 ]
@@ -29,10 +29,8 @@ Modifiers:
 	ctrl+shift+alt:		917795
 	
 	cmd+ctrl+alt+shift: 1966379
-
-*/
-
 )
+*/
 
 (
 Document.globalKeyDownAction_({ |v,c,m,u,k|
@@ -53,20 +51,30 @@ Document.globalKeyDownAction_({ |v,c,m,u,k|
 		};
 	};
 	
-	// -------------------- cmd + alt ... go to bookmark #
+	// -------------------- cmd + alt ... go to  #
 	(m == 1573160).if {
 		numberKeys.do{ |key, number|
 			if (k == key) {
-				number.postln;
+				CodeBookmark.goto(number);
 			}
 		}
 	};
-	// -------------------- cmd + ctrl ... place bookamrk #
+	// -------------------- ctrl + alt ... go and select  #
 
-	(m == 1310985).if {
+	(m == 786721).if {
 		numberKeys.do{ |key, number|
 			if (k == key) {
-				number.postln;
+				CodeBookmark.selectBalanced(number);
+			}
+		}
+	};
+
+	// -------------------- ctrl + shift ... place #
+
+	(m == 393475).if {
+		numberKeys.do{ |key, number|
+			if (k == key) {
+				CodeBookmark.set(number);
 			}
 		}
 	};
