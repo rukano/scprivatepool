@@ -133,6 +133,17 @@ SCMenuItem(menuLayout, "Layout > DEV")
 	Document.postColor_(Color.green);
 });
 
+SCMenuItem(menuTools, "Search Documentation")
+.action_({
+	var w = Window.new("  ???   ", Rect(500, 500, 150, 30), false).front;
+	TextField(w, Rect(10, 5, 130, 16))
+		.focus(true)
+		.action_({arg view;
+			view.string.openHelpFile;
+			w.close;
+		});
+})
+.setShortCut("o", true, false);
 
 SCMenuItem(menuTools, "Interpret All")
 .action_({
