@@ -169,9 +169,10 @@ s.options.memSize_(2**15);
 Server.local.options.device = "MOTU UltraLite";
 Server.internal.options.device = "MOTU UltraLite";
 
-// Server.default.options.numOutputBusChannels=16;
+Server.default.options.numOutputBusChannels = 2;
+Server.default.options.numInputBusChannels = 2;
 // ServerOptions.new.numOutputBusChannels=20;
-//s.recSampleFormat_("int16");
+// s.recSampleFormat_("int16");
 
 s.boot;
 
