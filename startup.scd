@@ -188,7 +188,7 @@ Document.listener
 	.alwaysOnTop_(false);
 Document.postColor_(Color.green);
 
-CocoaDocument.defaultFont_(Font("Inconsolata", 14));
+CocoaDocument.defaultFont_(Font("Inconsolata", 16));
 
 Document.themes.put
 (\rukano,
