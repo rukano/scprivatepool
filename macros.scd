@@ -16,6 +16,7 @@ MacroExpander.put("ring", "~#0#[#1#] = \\filter -> { |in| in ring1: SinOsc.ar(44
 MacroExpander.put("filter", "~#0#[#1#] = \\filter -> { |in| RLPF.ar(in, \\ffreq.kr(220), 0.1) }");
 MacroExpander.put("delay", "~#0#[#1#] = \\filter -> { |in| in + DelayC.ar(in, 5, [0, 1]) }");
 MacroExpander.put("reverb", "~#0#[#1#] = \\filter -> { |in| in + FreeVerb2.ar(in[0], in[1], 0.75, 0.75, 0.99) }");
+MacroExpander.put("gverb", "~#0#[#1#] = \\filter -> { |in| GVerb.ar(in, 120, 8) }");
 MacroExpander.put("comb", "~#0#[#1#] = \\filter -> { |in| in + CombC.ar(in, 5, 0.33, 2) }");
 MacroExpander.put("eq", "~#0#[#1#] = \\filter -> { |in| MidEQ.ar(in, 220, 0.5, 6) }");
 MacroExpander.put("comp", "~#0#[#1#] = \\filter -> { |in| Compander.ar(in, in, 0.1, 1, 1, 0.01, 0.1) }");
@@ -37,7 +38,7 @@ MacroExpander.put("init", "p = ProxySpace.push(s);\np.fadeTime = 0.25;\ns.latenc
 MacroExpander.put("tempo", "TempoClock.default.tempo = #0#; ~tempo = #0#;");
 MacroExpander.put("tools", "~#0#.fadeTime = 0;\n~#0#.play;\n~#0#.stop;\n~#0#.set(\\amp, 0.1);");
 MacroExpander.put("spec", "Spec.add(\\#0#, [min, max, \lin, step].asSpec)");
-MacroExpander.put("livesampler", "\"~/dev/__git/scprivatepool/livecode/benoit/samplergui.scd\".spath.load");
+MacroExpander.put("livesampler", "\"~/dev/__git/scprivatepool/livecode/benoit/samplergui.scd\".standardizePath.load");
 MacroExpander.put("loadsamples", "a = ();\n\"~/dev/__git/scwork/samples/*\".pathMatch.do { |samplepath|\n\tvar key = samplepath.basename.split($.).first;\n\tkey = key.split($_).last.asSymbol;\n\ta[key] ? a[key] = Buffer.read(s, samplepath)\n}");
 MacroExpander.put("commands", "MacroExpander.instance.dict.keys.asArray.sort.do(_.postln);");
 MacroExpander.put("timer", "(0..16).do{|i| { postf(\"\\n***********\\nMinute: %\\n***********\\n\", i) }.defer(i*60) };\"\";");
