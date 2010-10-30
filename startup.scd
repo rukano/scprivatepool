@@ -133,6 +133,30 @@ SCMenuItem(menuLayout, "Layout > DEV")
 	Document.postColor_(Color.green);
 });
 
+SCMenuItem(menuLayout, "Layout > LC")
+.action_({
+	s.scope.window.bounds_(Rect(Window.screenBounds.width - 356, Window.screenBounds.height - 223, 223, 223));
+	s.meter;
+	Document.listener
+		.bounds_(Rect(Window.screenBounds.width-360, Window.screenBounds.height-250, 360, 250))
+		.alwaysOnTop_(true)
+		.unfocusedFront;
+	Document.current.bounds_(
+		Rect(0, Window.screenBounds.height, Window.screenBounds.width-360, Window.screenBounds.height-250)
+	);
+	p.isNil.if
+		{ "No proxy space found in 'p'".warn }
+		{ ProxyMixer(p, 6, bounds: Rect(0, 40, 1094, 156)).switchSize(2) };
+	m.isNil.if
+		{ "No MandelClock found in 'm'".warn }
+		{ m.gui };
+	
+	// mandelbrot clock gui
+	// another widgets on the right?
+})
+.setShortCut("p", true, true);
+
+
 SCMenuItem(menuTools, "Search Documentation")
 .action_({
 	var w = Window.new("  ???   ", Rect(500, 500, 150, 30), false).front;
@@ -204,6 +228,7 @@ Document.themes.put
 );
 
 Document.setTheme(\rukano);
+
 QuarkSVNRepository.svnpath_("/usr/bin/svn");
 // AutoBackup.start;
 
@@ -242,3 +267,6 @@ Document.globalKeyDownAction_({ |v,c,m,u,k|
 
 });
 );
+
+// why has to be defered???
+{ GUI.skin.at(\plot).put(\gridFont, Font("Inconsolata", 10)) }.defer(1);
