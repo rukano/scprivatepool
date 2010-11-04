@@ -55,7 +55,7 @@
 
 	// accepts only alpha numeric!
 	// replaces the rest with pauses!
-	seqA {
+	seqI {
 		^this.digit.collect{ |char| char ?? \r };
 	}
 
