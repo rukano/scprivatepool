@@ -156,19 +156,6 @@ SCMenuItem(menuLayout, "Layout > LC")
 })
 .setShortCut("p", true, true);
 
-
-SCMenuItem(menuTools, "Search Documentation")
-.action_({
-	var w = Window.new("  ???   ", Rect(500, 500, 150, 30), false).front;
-	TextField(w, Rect(10, 5, 130, 16))
-		.focus(true)
-		.action_({arg view;
-			view.string.openHelpFile;
-			w.close;
-		});
-})
-.setShortCut("o", true, false);
-
 SCMenuItem(menuTools, "Interpret All")
 .action_({
 	var selectionStart = Document.current.selectionStart;
@@ -183,6 +170,34 @@ SCMenuItem(menuTools, "Balance All")
 	Document.current.balanceParens(inf);
 })
 .setShortCut("x", false, true);
+
+SCMenuSeparator(menuTools, 5); // add a separator
+SCMenuSeparator(menuTools, 9); // add a separator
+
+SCMenuItem(menuTools, "Search Documentation")
+.action_({
+	var w = Window.new("  ???   ", Rect(500, 500, 150, 30), false).front;
+	TextField(w, Rect(10, 5, 130, 16))
+		.focus(true)
+		.action_({ |view|
+			view.string.openHelpFile;
+			w.close;
+		});
+})
+.setShortCut("o", true, false);
+
+SCMenuItem(menuTools, "Interpret Box")
+.action_({
+	var w = Window.new(">>> interpret <<<", Rect(500, 500, 300, 30), false).front;
+	TextField(w, Rect(10, 5, 280, 16))
+		.focus(true)
+		.action_({ |view|
+			view.string.interpret;
+			w.close;
+		});
+})
+.setShortCut("i", true, false);
+
 
 ////////////////SERVERS///////////////////////////
 s = Server.default;
