@@ -18,13 +18,14 @@ MacroExpander.put("delay", "~#0#[#1#] = \\filter -> { |in| in + DelayC.ar(in, 5,
 MacroExpander.put("reverb", "~#0#[#1#] = \\filter -> { |in| in + FreeVerb2.ar(in[0], in[1], 0.75, 0.75, 0.99) }");
 MacroExpander.put("gverb", "~#0#[#1#] = \\filter -> { |in| GVerb.ar(in, 120, 8) }");
 MacroExpander.put("comb", "~#0#[#1#] = \\filter -> { |in| in + CombC.ar(in, 5, 0.33, 2) }");
+MacroExpander.put("fb", "~#0#[#1#] = \\filter -> { |in| in + FbC({ |fb| in + fb *0.85 }, 4, 1) }");
+MacroExpander.put("bitcrush", "(\n~#0#[#1#] = \\filter -> { |in, bits=16, downsamp=2|\n\tvar down;\n\tin = in.round(0.5 ** bits);\n\tdown = Latch.ar(in, Impulse.ar(SampleRate.ir / downsamp.max(2)));\n\tblend(in, down, (downsamp - 1).clip(0, 1))\n}\n)");
 MacroExpander.put("eq", "~#0#[#1#] = \\filter -> { |in| MidEQ.ar(in, 220, 0.5, 6) }");
 MacroExpander.put("comp", "~#0#[#1#] = \\filter -> { |in| Compander.ar(in, in, 0.1, 1, 1, 0.01, 0.1) }");
+
 MacroExpander.put("leakDC",  "~#0#[#1#] = \\filter -> { |in, leak=0.99| LeakDC.ar(in, leak) }");
 MacroExpander.put("roll", "~#0#[#1#] = \\filter -> { |in, clip=0.99, pole=0.2| OnePole.ar(in.clip2(clip), pole ** 0.7) }");
-MacroExpander.put("bitcrush", "(\n~#0#[#1#] = \\filter -> { |in, bits=16, downsamp=2|\n\tvar down;\n\tin = in.round(0.5 ** bits);\n\tdown = Latch.ar(in, Impulse.ar(SampleRate.ir / downsamp.max(2)));\n\tblend(in, down, (downsamp - 1).clip(0, 1))\n}\n)");
 MacroExpander.put("limiter", "~#0#[#1#] = \\filter -> { |in, limDrive=1, ampLimit=0.8, postAmp=1 |  Limiter.ar(in * limDrive, ampLimit) * postAmp; }");
-MacroExpander.put("fb", "~#0#[#1#] = \\filter -> { |in| in + FbC({ |fb| in + fb *0.85 }, 4, 1) }");
 
 
 // PATTERNS
