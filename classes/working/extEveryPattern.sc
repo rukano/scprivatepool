@@ -1,5 +1,7 @@
 /*
 Pattern and Array extension to describe changes after n repeats.
+*Inspired* by Tidal by Alex McLean. Is not a port.
+
 Example:
 (
 Pbind(
