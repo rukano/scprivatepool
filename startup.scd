@@ -6,9 +6,11 @@ QuarkSVNRepository.svnpath_("/usr/bin/svn");
 
 // SwingOSC
 
-SwingOptions.default.javaOptions = SwingOptions.default.javaOptions + "-Xdock:icon=/Users/rukano/dev/SwingOSC/application.icns";
+//SwingOptions.default.javaOptions = SwingOptions.default.javaOptions + "-Xdock:icon=/Users/rukano/dev/SwingOSC/application.icns";
 SwingOSC.program = "/Users/rukano/dev/SwingOSC/build/SwingOSC.jar";
 g = SwingOSC.default;
+
+// GUI.qt;
 
 // Split startups Emacs vs. SC.app
 

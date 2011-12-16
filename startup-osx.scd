@@ -206,13 +206,13 @@ Document.listener
 		(Window.screenBounds.width-400 @ 0) @
 		(Window.screenBounds.width @ Window.screenBounds.height)
 	)
-	.font_(Font("Inconsolata", 14))
+//	.font_(Font("Inconsolata", 14))
 	.background_(Color.new(0,0,0,0.85))
 	.stringColor_(Color.green)
 	.alwaysOnTop_(false);
 Document.postColor_(Color.green);
 
-CocoaDocument.defaultFont_(Font("Inconsolata", 16));
+// CocoaDocument.defaultFont_(Font("Inconsolata", 16));
 
 Document.themes.put
 (\rukano,
