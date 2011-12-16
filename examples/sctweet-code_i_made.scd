@@ -34,3 +34,58 @@ play{FreeVerb.ar(CombC.ar(SoundIn.ar(0).softclip,1,1/120,1),0.4,1,1).dup}//easy 
 play{SinOsc.ar(Latch.ar(SinOsc.kr(0.75).range(0,12).round.midiratio*[200,400*SinOsc.kr(0.01).range(1,4)],TDuty.kr(Dseq([1,2]/8,inf))))} //ye
 play{t=TDuty.kr(Drand(([1,2,3]/8),inf));SinOsc.ar(Demand.kr(t,0,Drand((50,53..71).midicps,inf))*[1,1.5]*LFPulse.kr(0.5).range(1,2)).dup}
 play{GVerb.ar(Decay2.ar(TDuty.ar(Dwrand([2,4,8,16]/16,[7,1,1,1]/10,inf)),0.02,0.05,SinOsc.ar(LFDNoise3.kr(40,199,150))).tanh,1,0.5)} // #sc
+play{d=Duty;f=d.kr(1/[1,2,4],0,Dseq([0,3,7,12,17]+24,inf));GVerb.ar(Blip.ar(f.midicps*[1,4,8],LFNoise1.kr(1/4,3,4)).sum,200,8)}
+play{d=Duty;f=d.kr(1/[1,2,3],0,Dseq([0,3,7,12,8]+36,inf));GVerb.ar(Blip.ar(f.midicps*[1,2,3],LFNoise1.kr(1,8,8)).sum,99,4)}
+9.do{|i|Pbind(\scale,#[0,3,5,7,10],\octave,3.rand+3,\dur,(12.rand+1)/5,\degree,Pn(Plazy{Pseq(18.partition(8.rand+2)-1,4)})).play}
+play{t=Impulse.kr(6);f=lag(Demand.kr(t,0,Drand(midicps((10,13..40)),inf)));RLPF.ar(Pulse.ar(f),1+Decay2.kr(t)*LFNoise2.kr(2,8,9)*f,1/9)!2}
+play{a=Decay2.ar(Impulse.ar(1/2),0.01,0.2,0.5)*SinOsc.ar(LFNoise2.kr(1,99,299))!2;4.do{a=a+CombN.ar(a,4,rrand(0.1,3).round(0.125),4,1/4)};a}
+
+
+// --- Solo hackpackt for using all ugens in sctweets:
+
+// Line
+l=Line;fork{loop{play{Splay.ar(SinOsc.ar({x=rrand(1,7)*99;l.kr(x,x/(0.25,0.5..4).choose,9)}!9,0,1/9)*l.ar(1,0,9,0.5,0.5,2))};1.wait}}// #sc
+
+// IEnvGen
+play{a={rrand(-1,1.0)}!1e3;e=InterplEnv(a,[1e-3],a*3);IEnvGen.ar(e,LFSaw.kr(LFCub.kr(8,0,300,300),0,e.times.sum)*LFNoise2.kr(99,1,10))!2}
+
+// Logistic
+play{Splay.ar(Logistic.ar(LFCub.kr([1,2,4,8],0,1.9,2),LFNoise0.kr(1/[16,12,8,4],400,999).round(150)))}// #supercollider #sc <3 chaotic noise
+
+play{Splay.ar(Logistic.ar(LFPar.kr([1,2,4,8,16]/8,0,1.9,2),LFNoise0.kr(1/[2,4,8,16],3000,4000).round(50)))} // #sc #supercollider 8-bit sfx
+
+play{Splay.ar(Logistic.ar(LFCub.kr([1,2,4,6],0,1.5,2),LFNoise0.kr(1/[2,2,4,4],250,300).round(50))).lag(LFCub.kr(1/8,0.001,0.003))}
+
+// LinRand
+fork{loop{r=rrand(-9,9);9.do{play{Pan2.ar(SinOsc.ar(LinRand(40,900,r))*EnvGen.ar(Env.sine(9),1,0.1,0,1,2),rrand(-1,1.0))}};rrand(6,8).wait}}
+
+// LocalIn/LocalOut
+play{l=LocalIn.ar+Decay2.ar(Impulse.ar(3),3e-2,0.05,LFCub.ar(LFNoise2.kr(19,500,600)));l=DelayN.ar(l,1,1/2);LocalOut.ar(l/3);l!2}
+
+// KeyState
+play{GVerb.ar(Blip.ar({|i|DegreeToKey.kr(LocalBuf.newFrom((0,3..24)),i,i%3+5,1,36).midicps}!50,5,KeyState.kr((0..49))*5e-3).sum!2,100,8)}
+
+// LFSaw
+play{l=LFSaw;l.ar(l.kr(l.kr([1,3],0,4,[5,6]),l.kr(1/[4,8]),l.kr(1,0,99,100),l.kr(1/2,0,50,l.kr(1/4,1/3,50,100))))/2} // #sc LFSaw galore
+
+// LFTri
+play{l=LFTri;l.ar(l.kr(1/4,1/1.5,l.kr(1,0,10,10),{|i|50+i}!8+l.kr(1/3,0,3,40)),0,l.kr((1..8),0,0.2).excess(0.01)*({|i|16-i/20}!16)).sum!2}
+
+// LFCub
+play{l=LFCub;Splay.ar(l.ar(l.kr(9.1,0,100,(200,300..500)),0,(l.kr(9,0,1,l.kr(1/[2,3,5,7],0,0.5,0))>(l.kr(1/2,0,0.4,0.5))).lag/2))} // #sc
+
+// LFParty
+play{Splay.ar(LFCub.ar(LFTri.kr([1,1.1],0,LFPar.kr(1/7,0,10),{(100,150..500).choose}!5),0,LFSaw.kr(4/[1,3,4,6,8])**LFPar.kr(1/8,0,9,16)))}
+
+// FreeVerb
+play{f=FreeVerb;x=Decay2.ar(Impulse.ar([3,4]),1/99,1/9,LFCub.ar({rrand(40,400)}!4,0,0.1)).sum;5.do{x=f.ar(x,LFTri.kr(1/16,0,1/4,0.3))};x!2}
+
+// PitchShift
+play{o=LFCub.kr(1/[24,7,13,18]);PitchShift.ar(LFPulse.ar(o[0]*50+100,0,0.1).lag(1/1000),o[3]*0.299+0.3,o[2]*8+8,o[1],o[0]*0.1+0.1)!2} // #sc
+
+play{o=LFCub.kr(1/[4,7,13,19]);PitchShift.ar(LFPar.ar(o@0*1e3+1e3,0,0.1).lag(1/1000),o@3*0.299+0.3,o@2*2+2,o@1,o[0]*0.1+0.1)!2}
+
+play{o=LFPulse.kr(1/[4,7,13,19]);PitchShift.ar(LFPar.ar(o@0*1e3+1e3,0,0.1).lag(1/1000),o@3*0.299+0.3,o@2*2+2,o@1,o[0]*0.1+0.1)!2}
+
+// BitAnd
+play{l=LFSaw;Clip.ar(BitAnd.ar(LFTri.ar(l.kr(1/[8,9],0,25,25).round(1),0,50,50).poll,l.kr(1/[7,5],0,25,25)).poll,-1,1)} // #sc glitchy 8-bity
