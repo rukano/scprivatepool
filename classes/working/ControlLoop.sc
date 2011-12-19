@@ -51,12 +51,11 @@ ControlLoop {
 			inf.do{ |i|
 				var time, val;
 				#time, val = array.wrapAt(i);
-				time.wait;
+				(time * stretch).wait;
 				if(val != nil) {
+					val = val * scale + offset;
 					action.value(val);
-					if (bus != nil) {
-						bus.set(val);
-					}
+					if (bus != nil) { bus.set(val) }
 				}
 			}
 		};
