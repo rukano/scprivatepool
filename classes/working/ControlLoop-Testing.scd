@@ -29,6 +29,12 @@ c.play
 c.stop
 c.reset
 
+// playing with the data and time
+c.stretch = 2      // half time
+c.stretch = 0.5   // double time
+c.scale = 1      // multiplies with the values
+c.offset = 0    // adds to the values
+ 
 // extras
 c.makeBus  // make a bus which will be setted on play
 c.bus      // get the bus
@@ -39,6 +45,8 @@ b = c.valuesBuffer
 
 c.makeBus
 c.play
+
 { SinOsc.ar(c.bus.kr * 200 + 200) }.play
 
 c.removeBus
+
