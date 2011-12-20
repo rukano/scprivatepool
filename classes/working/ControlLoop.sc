@@ -31,17 +31,17 @@ ControlLoop {
 
 	startRecording { |addAction=false|
 		list = List.new;
+		recording = true;
 		if (addAction) { this.add(nil) };
 		startAction.value;
-		recording = true;
 		^this
 	}
 	
 	stopRecording { |addAction=true|
 		if (addAction) { this.add(nil) };
+		recording = false;
 		this.processList;
 		stopAction.value;
-		recording = false;
 		^this	
 	}
 
