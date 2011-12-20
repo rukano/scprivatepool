@@ -25,7 +25,7 @@ ControlLoop {
 	}
 	
 	add { |val|
-		list.add([ Main.elapsedTime, val ]);
+		if (recording) { list.add([ Main.elapsedTime, val ]) };
 		if (thru) { action.value(val) };		
 	}
 
